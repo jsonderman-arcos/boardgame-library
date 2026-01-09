@@ -93,27 +93,6 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, on
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-            {onAddPlay && (
-              <button
-                onClick={() => onAddPlay(entry.id)}
-                className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
-                title="Log a play"
-              >
-                <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-xs sm:text-sm font-semibold">{playCount}</span>
-              </button>
-            )}
-            <button
-              onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-              className={`p-1.5 sm:p-2 rounded-lg transition ${
-                entry.is_favorite
-                  ? 'bg-yellow-400 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
-              }`}
-              title={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
-            >
-              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={entry.is_favorite ? 'currentColor' : 'none'} />
-            </button>
             <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
@@ -125,10 +104,10 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, on
               {showMenu && (
                 <>
                   <div
-                    className="fixed inset-0 z-10"
+                    className="fixed inset-0 z-[100]"
                     onClick={() => setShowMenu(false)}
                   />
-                  <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-20">
+                  <div className="absolute left-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-[101]">
                     <button
                       onClick={() => {
                         setShowMenu(false);
@@ -153,6 +132,27 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, on
                 </>
               )}
             </div>
+            <button
+              onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
+              className={`p-1.5 sm:p-2 rounded-lg transition ${
+                entry.is_favorite
+                  ? 'bg-yellow-400 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
+              }`}
+              title={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={entry.is_favorite ? 'currentColor' : 'none'} />
+            </button>
+            {onAddPlay && (
+              <button
+                onClick={() => onAddPlay(entry.id)}
+                className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
+                title="Log a play"
+              >
+                <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="text-xs sm:text-sm font-semibold">{playCount}</span>
+              </button>
+            )}
           </div>
         </div>
       </div>
