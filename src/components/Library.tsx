@@ -42,6 +42,7 @@ export default function Library() {
     minPlays: 0,
     maxPlays: Infinity,
     years: [] as string[],
+    playerCounts: [] as number[],
   });
 
   const availableFilters = useMemo(() => {
@@ -128,6 +129,27 @@ export default function Library() {
 
     if (filters.maxPlays !== Infinity) {
       filtered = filtered.filter((entry) => playsCount(entry) <= filters.maxPlays);
+    }
+
+    if (filters.playerCounts.length > 0) {
+      filtered = filtered.filter((entry) => {
+        const minPlayers = entry.game.min_players;
+        const maxPlayers = entry.game.max_players;
+
+        if (!minPlayers && !maxPlayers) return false;
+
+        return filters.playerCounts.some((count) => {
+          if (count === 6) {
+            if (!minPlayers && maxPlayers) return maxPlayers >= 6;
+            if (minPlayers && !maxPlayers) return true;
+            return maxPlayers >= 6 || minPlayers >= 6;
+          }
+
+          if (!minPlayers && maxPlayers) return count <= maxPlayers;
+          if (minPlayers && !maxPlayers) return count >= minPlayers;
+          return count >= minPlayers && count <= maxPlayers;
+        });
+      });
     }
 
     filtered.sort((a, b) => {
@@ -248,6 +270,7 @@ export default function Library() {
       minPlays: 0,
       maxPlays: Infinity,
       years: [],
+      playerCounts: [],
     });
     setFilterFavorites(false);
     setFilterForSale(false);
@@ -262,6 +285,7 @@ export default function Library() {
     count += filters.gameCategories.length;
     count += filters.rankings.length;
     count += filters.years.length;
+    count += filters.playerCounts.length;
     if (filters.minPlays > 0) count++;
     if (filters.maxPlays !== Infinity) count++;
     return count;
@@ -465,6 +489,32 @@ export default function Library() {
                         className="w-full mt-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none"
                       />
                     </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-slate-900 mb-3">Number of Players</h4>
+                  <div className="space-y-2">
+                    {[1, 2, 3, 4, 5, 6].map((count) => (
+                      <label key={count} className="flex items-center space-x-2 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={filters.playerCounts.includes(count)}
+                          onChange={() => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              playerCounts: prev.playerCounts.includes(count)
+                                ? prev.playerCounts.filter((c) => c !== count)
+                                : [...prev.playerCounts, count],
+                            }));
+                          }}
+                          className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
+                        />
+                        <span className="text-sm text-slate-700 group-hover:text-slate-900">
+                          {count === 6 ? '6+' : count} {count === 1 ? 'player' : 'players'}
+                        </span>
+                      </label>
+                    ))}
                   </div>
                 </div>
               </div>
