@@ -1,4 +1,4 @@
-import { Star, Trash2, Edit, DollarSign, Users, Clock } from 'lucide-react';
+import { Star, Trash2, Edit, DollarSign, Users, Clock, Plus } from 'lucide-react';
 import { UserLibraryEntry, Game } from '../lib/supabase';
 
 interface GameCardProps {
@@ -6,11 +6,13 @@ interface GameCardProps {
   onToggleFavorite: (entryId: string, isFavorite: boolean) => void;
   onDelete: (entryId: string) => void;
   onEdit: (entry: UserLibraryEntry & { game: Game }) => void;
+  onAddPlay?: (entryId: string) => void;
   layout?: 'grid' | 'list';
 }
 
-export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, layout = 'grid' }: GameCardProps) {
+export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, onAddPlay, layout = 'grid' }: GameCardProps) {
   const { game } = entry;
+  const playCount = entry.played_dates?.length || 0;
 
   if (layout === 'list') {
     return (
@@ -65,11 +67,6 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, la
                   <span>{game.playtime_minutes} min</span>
                 </div>
               )}
-              {entry.played_dates && entry.played_dates.length > 0 && (
-                <span className="text-xs">
-                  Played {entry.played_dates.length}x
-                </span>
-              )}
             </div>
             {entry.personal_ranking && (
               <span
@@ -91,6 +88,16 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, la
               <div className="bg-green-500 text-white p-2 rounded-lg">
                 <DollarSign className="w-4 h-4" />
               </div>
+            )}
+            {onAddPlay && (
+              <button
+                onClick={() => onAddPlay(entry.id)}
+                className="flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
+                title="Log a play"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="text-sm">{playCount}</span>
+              </button>
             )}
             <button
               onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}

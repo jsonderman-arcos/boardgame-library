@@ -17,7 +17,7 @@ import BarcodeScanner from './BarcodeScanner';
 import EditGameModal from './EditGameModal';
 import SearchSharedGamesModal from './SearchSharedGamesModal';
 
-type SortOption = 'name-asc' | 'name-desc' | 'date-added-desc' | 'date-added-asc';
+type SortOption = 'name-asc' | 'name-desc' | 'date-added-desc' | 'date-added-asc' | 'plays-desc' | 'plays-asc';
 
 export default function Library() {
   const { user, refreshProfile } = useAuth();
@@ -162,6 +162,10 @@ export default function Library() {
           return new Date(b.added_date).getTime() - new Date(a.added_date).getTime();
         case 'date-added-asc':
           return new Date(a.added_date).getTime() - new Date(b.added_date).getTime();
+        case 'plays-desc':
+          return playsCount(b) - playsCount(a);
+        case 'plays-asc':
+          return playsCount(a) - playsCount(b);
         default:
           return 0;
       }
@@ -248,6 +252,23 @@ export default function Library() {
       setEditingGame(null);
     } catch (error) {
       console.error('Error updating game:', error);
+    }
+  };
+
+  const handleAddPlay = async (entryId: string) => {
+    const entry = library.find((e) => e.id === entryId);
+    if (!entry) return;
+
+    const today = new Date().toISOString().split('T')[0];
+    const currentDates = entry.played_dates || [];
+    const updatedDates = [...currentDates, today].sort().reverse();
+
+    try {
+      await updateLibraryEntry(entryId, { played_dates: updatedDates });
+      await loadLibrary();
+      await refreshProfile();
+    } catch (error) {
+      console.error('Error adding play:', error);
     }
   };
 
@@ -381,6 +402,8 @@ export default function Library() {
                   <option value="name-desc">Name (Z-A)</option>
                   <option value="date-added-desc">Recently Added</option>
                   <option value="date-added-asc">Oldest First</option>
+                  <option value="plays-desc">Most Played</option>
+                  <option value="plays-asc">Least Played</option>
                 </select>
                 <ArrowUpDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
               </div>
@@ -558,6 +581,7 @@ export default function Library() {
                 onToggleFavorite={handleToggleFavorite}
                 onDelete={handleDeleteGame}
                 onEdit={setEditingGame}
+                onAddPlay={handleAddPlay}
                 layout="list"
               />
             ))}
