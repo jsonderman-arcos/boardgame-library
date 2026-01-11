@@ -11,6 +11,7 @@ interface EditGameModalProps {
 
 export default function EditGameModal({ entry, onSave, onClose, onDelete }: EditGameModalProps) {
   const [forSale, setForSale] = useState(entry.for_sale);
+  const [isFavorite, setIsFavorite] = useState(entry.is_favorite);
   const [ranking, setRanking] = useState(entry.personal_ranking || '');
   const [notes, setNotes] = useState(entry.notes || '');
   const [playedDates, setPlayedDates] = useState<string[]>(entry.played_dates || []);
@@ -19,6 +20,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
     e.preventDefault();
     onSave(entry.id, {
       for_sale: forSale,
+      is_favorite: isFavorite,
       personal_ranking: ranking as 'high' | 'medium' | 'low' | undefined,
       notes: notes || undefined,
       played_dates: playedDates,
@@ -52,7 +54,16 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
+          <div className="space-y-3">
+            <label className="flex items-center space-x-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isFavorite}
+                onChange={(e) => setIsFavorite(e.target.checked)}
+                className="w-5 h-5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+              />
+              <span className="text-slate-700 font-medium">Favorite</span>
+            </label>
             <label className="flex items-center space-x-3 cursor-pointer">
               <input
                 type="checkbox"
