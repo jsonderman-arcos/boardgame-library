@@ -187,23 +187,11 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
           </div>
         )}
 
-        <div className="absolute top-1 right-1 flex space-x-1">
-          {entry.for_sale && (
-            <div className="bg-green-500 text-white p-1 rounded shadow-lg">
-              <DollarSign className="w-3 h-3" />
-            </div>
-          )}
-          <button
-            onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-            className={`p-1 rounded shadow-lg transition ${
-              entry.is_favorite
-                ? 'bg-yellow-400 text-white'
-                : 'bg-white/90 text-slate-600 hover:bg-yellow-400 hover:text-white'
-            }`}
-          >
-            <Star className="w-3 h-3" fill={entry.is_favorite ? 'currentColor' : 'none'} />
-          </button>
-        </div>
+        {entry.for_sale && (
+          <div className="absolute top-1 right-1 bg-green-500 text-white p-1 rounded shadow-lg">
+            <DollarSign className="w-3 h-3" />
+          </div>
+        )}
       </div>
 
       <div className="p-2">
@@ -238,19 +226,79 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
           </div>
         )}
 
-        <div className="flex space-x-1 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center space-x-1 mt-2">
+          <div className="relative flex-1">
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="w-full flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
+              title="More options"
+            >
+              <MoreVertical className="w-3.5 h-3.5" />
+            </button>
+            {showMenu && (
+              <>
+                <div
+                  className="fixed inset-0 z-[100]"
+                  onClick={() => setShowMenu(false)}
+                />
+                <div className="absolute left-0 bottom-full mb-1 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-[101]">
+                  <button
+                    onClick={() => {
+                      setShowMenu(false);
+                      onEdit(entry);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                  >
+                    <Edit className="w-4 h-4" />
+                    <span>Edit Details</span>
+                  </button>
+                  {onToggleForSale && (
+                    <button
+                      onClick={() => {
+                        setShowMenu(false);
+                        onToggleForSale(entry.id, !entry.for_sale);
+                      }}
+                      className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                    >
+                      <DollarSign className="w-4 h-4" />
+                      <span>{entry.for_sale ? 'Unmark Sale' : 'Mark for Sale'}</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setShowMenu(false);
+                      onDelete(entry.id);
+                    }}
+                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    <span>Remove</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
           <button
-            onClick={() => onEdit(entry)}
-            className="flex-1 flex items-center justify-center px-2 py-1 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
+            onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
+            className={`flex items-center justify-center px-2 py-1.5 rounded transition ${
+              entry.is_favorite
+                ? 'bg-yellow-400 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
+            }`}
+            title={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
           >
-            <Edit className="w-3 h-3" />
+            <Star className="w-3.5 h-3.5" fill={entry.is_favorite ? 'currentColor' : 'none'} />
           </button>
-          <button
-            onClick={() => onDelete(entry.id)}
-            className="flex items-center justify-center px-2 py-1 bg-red-50 text-red-600 rounded hover:bg-red-100 transition"
-          >
-            <Trash2 className="w-3 h-3" />
-          </button>
+          {onAddPlay && (
+            <button
+              onClick={() => onAddPlay(entry.id)}
+              className="flex items-center gap-1 px-2 py-1.5 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition font-medium"
+              title="Log a play"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span className="text-xs font-semibold">{playCount}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
