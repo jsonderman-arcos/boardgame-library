@@ -17,6 +17,7 @@ import GameCard from './GameCard';
 import BarcodeScanner from './BarcodeScanner';
 import EditGameModal from './EditGameModal';
 import SearchSharedGamesModal from './SearchSharedGamesModal';
+import ManualGameEntry from './ManualGameEntry';
 import Tooltip from './Tooltip';
 
 type SortOption = 'name-asc' | 'name-desc' | 'date-added-desc' | 'date-added-asc' | 'plays-desc' | 'plays-asc';
@@ -28,6 +29,8 @@ export default function Library() {
   const [loading, setLoading] = useState(true);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
+  const [showManualEntry, setShowManualEntry] = useState(false);
+  const [scannedBarcode, setScannedBarcode] = useState<string>('');
   const [editingGame, setEditingGame] = useState<(UserLibraryEntry & { game: Game }) | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterFavorites, setFilterFavorites] = useState(false);
@@ -225,14 +228,22 @@ export default function Library() {
       let game = await getGameByBarcode(barcode);
 
       if (!game) {
-        const gameData = await lookupBarcode(barcode);
-        game = await createSharedGame({
-          barcode,
-          name: gameData.name || 'Unknown Game',
-          publisher: gameData.publisher,
-          year: gameData.year,
-          cover_image: gameData.cover_image,
-        });
+        try {
+          const gameData = await lookupBarcode(barcode);
+          game = await createSharedGame({
+            barcode,
+            name: gameData.name || 'Unknown Game',
+            publisher: gameData.publisher,
+            year: gameData.year,
+            cover_image: gameData.cover_image,
+          });
+        } catch (lookupError) {
+          console.error('Barcode not found in database:', lookupError);
+          setScannedBarcode(barcode);
+          setShowScanner(false);
+          setShowManualEntry(true);
+          return;
+        }
       }
 
       await addGameToLibrary(user.id, game.id);
@@ -242,6 +253,28 @@ export default function Library() {
     } catch (error) {
       console.error('Error adding game:', error);
       alert('Failed to add game. It may already be in your library.');
+    }
+  };
+
+  const handleManualGameEntry = async (gameData: {
+    barcode: string;
+    name: string;
+    publisher?: string;
+    year?: string;
+    cover_image?: string;
+  }) => {
+    if (!user) return;
+
+    try {
+      const game = await createSharedGame(gameData);
+      await addGameToLibrary(user.id, game.id);
+      await loadLibrary();
+      await refreshProfile();
+      setShowManualEntry(false);
+      setScannedBarcode('');
+    } catch (error) {
+      console.error('Error adding manual game:', error);
+      alert('Failed to add game. Please try again.');
     }
   };
 
@@ -686,9 +719,16 @@ export default function Library() {
         <BarcodeScanner
           onScan={handleScanBarcode}
           onClose={() => setShowScanner(false)}
-          onSearchInstead={() => {
-            setShowScanner(false);
-            setShowSearchModal(true);
+        />
+      )}
+
+      {showManualEntry && (
+        <ManualGameEntry
+          barcode={scannedBarcode}
+          onSave={handleManualGameEntry}
+          onClose={() => {
+            setShowManualEntry(false);
+            setScannedBarcode('');
           }}
         />
       )}
