@@ -638,6 +638,7 @@ export default function Library() {
                 onToggleForSale={handleToggleForSale}
                 onDelete={handleDeleteGame}
                 onEdit={setEditingGame}
+                onAddPlay={handleAddPlay}
                 layout="grid"
               />
             ))}
