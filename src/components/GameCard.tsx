@@ -18,8 +18,8 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, on
 
   if (layout === 'list') {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition group flex relative">
-        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 flex-shrink-0">
+      <div className="bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition group flex relative">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 flex-shrink-0 overflow-hidden rounded-l-lg">
           {game.cover_image ? (
             <img
               src={game.cover_image}
