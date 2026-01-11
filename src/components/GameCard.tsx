@@ -172,8 +172,8 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition group flex flex-col">
-      <div className="aspect-square bg-slate-100 relative overflow-hidden">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition group flex flex-col">
+      <div className="aspect-square bg-slate-100 relative overflow-hidden rounded-t-lg">
         {game.cover_image ? (
           <img
             src={game.cover_image}
