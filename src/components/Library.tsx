@@ -264,7 +264,10 @@ export default function Library() {
   };
 
   const handleDeleteGame = async (entryId: string) => {
-    if (!confirm('Are you sure you want to remove this game from your library?')) {
+    const entry = library.find((e) => e.id === entryId);
+    const gameName = entry?.game.name || 'this game';
+
+    if (!confirm(`Are you sure you want to remove "${gameName}" from your library?`)) {
       return;
     }
 
@@ -365,6 +368,7 @@ export default function Library() {
                 <button
                   onClick={() => setSearchQuery('')}
                   className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                  title="Clear search"
                 >
                   <X className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
@@ -374,7 +378,8 @@ export default function Library() {
             <div className="flex justify-end">
               <button
                 onClick={() => setShowSearchModal(true)}
-                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base max-w-[150px]"
+                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
+                title="Add a new game to your library"
               >
                 <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Add Game</span>
@@ -496,6 +501,7 @@ export default function Library() {
                     options={availableFilters.publishers}
                     selected={filters.publishers}
                     onToggle={(value) => toggleFilterValue('publishers', value)}
+                    onClear={() => setFilters({ ...filters, publishers: [] })}
                   />
                 )}
 
@@ -523,6 +529,7 @@ export default function Library() {
                     options={availableFilters.years}
                     selected={filters.years}
                     onToggle={(value) => toggleFilterValue('years', value)}
+                    onClear={() => setFilters({ ...filters, years: [] })}
                   />
                 )}
 
@@ -735,21 +742,36 @@ function MultiSelectDropdown({
   options,
   selected,
   onToggle,
+  onClear,
 }: {
   title: string;
   options: string[];
   selected: string[];
   onToggle: (value: string) => void;
+  onClear?: () => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="relative">
-      <h4 className="text-sm font-medium text-slate-900 mb-2">{title}</h4>
+      <div className="flex items-center justify-between mb-2">
+        <h4 className="text-sm font-medium text-slate-900">{title}</h4>
+        {selected.length > 0 && onClear && (
+          <button
+            type="button"
+            onClick={onClear}
+            className="text-xs text-slate-600 hover:text-slate-900 underline"
+            title="Clear all selections"
+          >
+            Clear
+          </button>
+        )}
+      </div>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-3 py-2 text-left bg-white border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition flex items-center justify-between"
+        title={selected.length === 0 ? `Select ${title.toLowerCase()}` : `${selected.length} ${title.toLowerCase()} selected`}
       >
         <span className="truncate">
           {selected.length === 0 ? `Select ${title.toLowerCase()}...` : `${selected.length} selected`}

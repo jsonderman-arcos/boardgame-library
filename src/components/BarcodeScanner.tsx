@@ -25,6 +25,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 rounded-lg transition"
+            title="Close"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>

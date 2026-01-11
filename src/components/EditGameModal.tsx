@@ -45,6 +45,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 rounded-lg transition"
+            title="Close"
           >
             <X className="w-5 h-5 text-slate-600" />
           </button>
@@ -117,6 +118,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
                         type="button"
                         onClick={() => removePlayedDate(index)}
                         className="text-red-600 hover:text-red-700"
+                        title="Remove this play"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -130,11 +132,16 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
           <div className="flex space-x-3 pt-4 border-t border-slate-200">
             <button
               type="button"
-              onClick={() => onDelete(entry.id)}
+              onClick={() => {
+                if (confirm(`Are you sure you want to remove "${entry.game.name}" from your library?`)) {
+                  onDelete(entry.id);
+                }
+              }}
               className="px-4 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition font-medium flex items-center space-x-2"
+              title="Remove game from library"
             >
               <Trash2 className="w-4 h-4" />
-              <span>Delete</span>
+              <span>Remove</span>
             </button>
             <div className="flex-1 flex space-x-3">
               <button
