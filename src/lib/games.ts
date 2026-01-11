@@ -14,6 +14,20 @@ export async function getUserLibrary(userId: string) {
   return data as (UserLibraryEntry & { game: Game })[];
 }
 
+export async function getLibraryEntry(entryId: string) {
+  const { data, error } = await supabase
+    .from('user_library')
+    .select(`
+      *,
+      game:shared_games(*)
+    `)
+    .eq('id', entryId)
+    .single();
+
+  if (error) throw error;
+  return data as UserLibraryEntry & { game: Game };
+}
+
 export async function searchSharedGames(query: string) {
   const { data, error } = await supabase
     .from('shared_games')

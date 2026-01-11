@@ -3,6 +3,7 @@ import { Plus, Search, Star, Filter, Grid3x3, List, ChevronDown, X, ArrowUpDown,
 import { useAuth } from '../contexts/AuthContext';
 import {
   getUserLibrary,
+  getLibraryEntry,
   getGameByBarcode,
   createSharedGame,
   addGameToLibrary,
@@ -246,7 +247,8 @@ export default function Library() {
   const handleToggleFavorite = async (entryId: string, isFavorite: boolean) => {
     try {
       await updateLibraryEntry(entryId, { is_favorite: isFavorite });
-      await loadLibrary();
+      const updatedEntry = await getLibraryEntry(entryId);
+      setLibrary((prev) => prev.map((entry) => (entry.id === entryId ? updatedEntry : entry)));
       await refreshProfile();
     } catch (error) {
       console.error('Error updating favorite:', error);
@@ -256,7 +258,8 @@ export default function Library() {
   const handleToggleForSale = async (entryId: string, forSale: boolean) => {
     try {
       await updateLibraryEntry(entryId, { for_sale: forSale });
-      await loadLibrary();
+      const updatedEntry = await getLibraryEntry(entryId);
+      setLibrary((prev) => prev.map((entry) => (entry.id === entryId ? updatedEntry : entry)));
       await refreshProfile();
     } catch (error) {
       console.error('Error updating for sale status:', error);
@@ -283,7 +286,8 @@ export default function Library() {
   const handleSaveEdit = async (entryId: string, updates: Partial<UserLibraryEntry>) => {
     try {
       await updateLibraryEntry(entryId, updates);
-      await loadLibrary();
+      const updatedEntry = await getLibraryEntry(entryId);
+      setLibrary((prev) => prev.map((entry) => (entry.id === entryId ? updatedEntry : entry)));
       await refreshProfile();
       setEditingGame(null);
     } catch (error) {
@@ -301,7 +305,8 @@ export default function Library() {
 
     try {
       await updateLibraryEntry(entryId, { played_dates: updatedDates });
-      await loadLibrary();
+      const updatedEntry = await getLibraryEntry(entryId);
+      setLibrary((prev) => prev.map((entry) => (entry.id === entryId ? updatedEntry : entry)));
       await refreshProfile();
     } catch (error) {
       console.error('Error adding play:', error);
