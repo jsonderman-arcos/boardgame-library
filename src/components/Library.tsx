@@ -238,6 +238,16 @@ export default function Library() {
     }
   };
 
+  const handleToggleForSale = async (entryId: string, forSale: boolean) => {
+    try {
+      await updateLibraryEntry(entryId, { for_sale: forSale });
+      await loadLibrary();
+      await refreshProfile();
+    } catch (error) {
+      console.error('Error updating for sale status:', error);
+    }
+  };
+
   const handleDeleteGame = async (entryId: string) => {
     if (!confirm('Are you sure you want to remove this game from your library?')) {
       return;
@@ -587,6 +597,7 @@ export default function Library() {
                 key={entry.id}
                 entry={entry}
                 onToggleFavorite={handleToggleFavorite}
+                onToggleForSale={handleToggleForSale}
                 onDelete={handleDeleteGame}
                 onEdit={setEditingGame}
                 onAddPlay={handleAddPlay}
@@ -601,6 +612,7 @@ export default function Library() {
                 key={entry.id}
                 entry={entry}
                 onToggleFavorite={handleToggleFavorite}
+                onToggleForSale={handleToggleForSale}
                 onDelete={handleDeleteGame}
                 onEdit={setEditingGame}
                 layout="grid"

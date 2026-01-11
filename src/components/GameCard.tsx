@@ -5,13 +5,14 @@ import { UserLibraryEntry, Game } from '../lib/supabase';
 interface GameCardProps {
   entry: UserLibraryEntry & { game: Game };
   onToggleFavorite: (entryId: string, isFavorite: boolean) => void;
+  onToggleForSale?: (entryId: string, forSale: boolean) => void;
   onDelete: (entryId: string) => void;
   onEdit: (entry: UserLibraryEntry & { game: Game }) => void;
   onAddPlay?: (entryId: string) => void;
   layout?: 'grid' | 'list';
 }
 
-export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, onAddPlay, layout = 'grid' }: GameCardProps) {
+export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onDelete, onEdit, onAddPlay, layout = 'grid' }: GameCardProps) {
   const { game } = entry;
   const playCount = entry.played_dates?.length || 0;
   const [showMenu, setShowMenu] = useState(false);
@@ -118,6 +119,18 @@ export default function GameCard({ entry, onToggleFavorite, onDelete, onEdit, on
                       <Edit className="w-4 h-4" />
                       <span>Edit Details</span>
                     </button>
+                    {onToggleForSale && (
+                      <button
+                        onClick={() => {
+                          setShowMenu(false);
+                          onToggleForSale(entry.id, !entry.for_sale);
+                        }}
+                        className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                      >
+                        <DollarSign className="w-4 h-4" />
+                        <span>{entry.for_sale ? 'Unmark Sale' : 'Mark for Sale'}</span>
+                      </button>
+                    )}
                     <button
                       onClick={() => {
                         setShowMenu(false);
