@@ -13,7 +13,6 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
   const [ranking, setRanking] = useState(entry.personal_ranking || '');
   const [notes, setNotes] = useState(entry.notes || '');
   const [playedDates, setPlayedDates] = useState<string[]>(entry.played_dates || []);
-  const [newDate, setNewDate] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,9 +25,9 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
   };
 
   const addPlayedDate = () => {
-    if (newDate && !playedDates.includes(newDate)) {
-      setPlayedDates([...playedDates, newDate].sort().reverse());
-      setNewDate('');
+    const today = new Date().toISOString().split('T')[0];
+    if (!playedDates.includes(today)) {
+      setPlayedDates([...playedDates, today].sort().reverse());
     }
   };
 
@@ -67,22 +66,6 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              Priority Ranking
-            </label>
-            <select
-              value={ranking}
-              onChange={(e) => setRanking(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
-            >
-              <option value="">No ranking</option>
-              <option value="high">High Priority</option>
-              <option value="medium">Medium Priority</option>
-              <option value="low">Low Priority</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
               Notes
             </label>
             <textarea
@@ -95,24 +78,17 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
-              Play History
-            </label>
-            <div className="flex space-x-2 mb-3">
-              <input
-                type="date"
-                value={newDate}
-                onChange={(e) => setNewDate(e.target.value)}
-                className="flex-1 px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
-              />
+            <div className="flex items-center justify-between mb-3">
+              <label className="block text-sm font-medium text-slate-700">
+                Play History
+              </label>
               <button
                 type="button"
                 onClick={addPlayedDate}
-                disabled={!newDate}
-                className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+                className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition flex items-center space-x-2"
               >
                 <Calendar className="w-4 h-4" />
-                <span>Add</span>
+                <span>Add Play</span>
               </button>
             </div>
             {playedDates.length > 0 && (
