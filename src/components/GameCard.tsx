@@ -50,26 +50,25 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                 </span>
               )}
             </div>
-            <div className="flex items-center space-x-2 text-xs sm:text-sm text-slate-600 mb-1">
-              <span className="truncate">{game.publisher || 'Unknown Publisher'}</span>
-              {game.year && (
-                <>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:inline">{game.year}</span>
-                </>
-              )}
-            </div>
-            <div className="flex items-center gap-2 sm:gap-3 text-xs text-slate-600 flex-wrap">
-              {(game.min_players || game.max_players) && (
+            {(game.min_players || game.max_players) && (
+              <div className="flex items-center space-x-2 text-xs sm:text-sm text-slate-600 mb-1">
                 <div className="flex items-center gap-1">
-                  <Users className="w-3 h-3" />
+                  <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>
                     {game.min_players === game.max_players
-                      ? `${game.min_players}`
-                      : `${game.min_players || '?'}-${game.max_players || '?'}`}
+                      ? `${game.min_players} player${game.min_players > 1 ? 's' : ''}`
+                      : `${game.min_players || '?'}-${game.max_players || '?'} players`}
                   </span>
                 </div>
-              )}
+                {game.year && (
+                  <>
+                    <span className="hidden sm:inline">•</span>
+                    <span className="hidden sm:inline">{game.year}</span>
+                  </>
+                )}
+              </div>
+            )}
+            <div className="flex items-center gap-2 sm:gap-3 text-xs text-slate-600 flex-wrap">
               {game.playtime_minutes && (
                 <div className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />
@@ -173,7 +172,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition group">
+    <div className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition group flex flex-col">
       <div className="aspect-square bg-slate-100 relative overflow-hidden">
         {game.cover_image ? (
           <img
@@ -194,7 +193,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
         )}
       </div>
 
-      <div className="p-2">
+      <div className="p-2 flex flex-col flex-1">
         <div className="flex items-start gap-1 mb-0.5">
           <h3 className="text-xs font-semibold text-slate-900 line-clamp-2 leading-tight flex-1">{game.name}</h3>
           {game.is_expansion && (
@@ -203,30 +202,26 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
             </span>
           )}
         </div>
-        <p className="text-xs text-slate-600 truncate mb-1">{game.publisher || 'Unknown'}</p>
 
-        {((game.min_players || game.max_players) || game.playtime_minutes) && (
-          <div className="flex items-center gap-2 text-[10px] text-slate-500 mb-1">
-            {(game.min_players || game.max_players) && (
-              <div className="flex items-center gap-0.5">
-                <Users className="w-3 h-3" />
-                <span>
-                  {game.min_players === game.max_players
-                    ? `${game.min_players}`
-                    : `${game.min_players || '?'}-${game.max_players || '?'}`}
-                </span>
-              </div>
-            )}
-            {game.playtime_minutes && (
-              <div className="flex items-center gap-0.5">
-                <Clock className="w-3 h-3" />
-                <span>{game.playtime_minutes}m</span>
-              </div>
-            )}
+        {(game.min_players || game.max_players) && (
+          <div className="flex items-center gap-1 text-xs text-slate-600 mb-1">
+            <Users className="w-3 h-3" />
+            <span>
+              {game.min_players === game.max_players
+                ? `${game.min_players} player${game.min_players > 1 ? 's' : ''}`
+                : `${game.min_players || '?'}-${game.max_players || '?'} players`}
+            </span>
           </div>
         )}
 
-        <div className="flex items-center space-x-1 mt-2">
+        {game.playtime_minutes && (
+          <div className="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
+            <Clock className="w-3 h-3" />
+            <span>{game.playtime_minutes}m</span>
+          </div>
+        )}
+
+        <div className="flex items-center space-x-1 mt-auto pt-2">
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
