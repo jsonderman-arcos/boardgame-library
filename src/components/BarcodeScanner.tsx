@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Scan, X } from 'lucide-react';
+import { Scan, X, Search } from 'lucide-react';
 
 interface BarcodeScannerProps {
   onScan: (barcode: string) => void;
   onClose: () => void;
+  onSearchInstead?: () => void;
 }
 
-export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
+export default function BarcodeScanner({ onScan, onClose, onSearchInstead }: BarcodeScannerProps) {
   const [barcode, setBarcode] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -61,6 +62,17 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
             <Scan className="w-5 h-5" />
             <span>Add Game</span>
           </button>
+
+          {onSearchInstead && (
+            <button
+              type="button"
+              onClick={onSearchInstead}
+              className="w-full flex items-center justify-center space-x-2 bg-white border-2 border-slate-900 text-slate-900 py-3 rounded-lg font-semibold hover:bg-slate-50 transition"
+            >
+              <Search className="w-5 h-5" />
+              <span>Search Existing Games</span>
+            </button>
+          )}
         </form>
       </div>
     </div>
