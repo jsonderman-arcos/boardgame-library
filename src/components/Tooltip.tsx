@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useRef } from 'react';
 
 interface TooltipProps {
   content: string;
@@ -8,14 +8,19 @@ interface TooltipProps {
 
 export default function Tooltip({ content, children, delay = 200 }: TooltipProps) {
   const [show, setShow] = useState(false);
-  let timeout: NodeJS.Timeout;
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
-    timeout = setTimeout(() => setShow(true), delay);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => setShow(true), delay);
   };
 
   const handleMouseLeave = () => {
-    clearTimeout(timeout);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     setShow(false);
   };
 
