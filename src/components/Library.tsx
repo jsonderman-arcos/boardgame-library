@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Plus, Search, Star, Filter, Grid3x3, List, ChevronDown, X, ArrowUpDown } from 'lucide-react';
+import { Plus, Search, Star, Filter, Grid3x3, List, ChevronDown, X, ArrowUpDown, DollarSign } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getUserLibrary,
@@ -359,17 +359,27 @@ export default function Library() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search games..."
-                className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                className="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                >
+                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              )}
             </div>
 
-            <button
-              onClick={() => setShowSearchModal(true)}
-              className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
-            >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span>Add Game</span>
-            </button>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setShowSearchModal(true)}
+                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base max-w-[150px]"
+              >
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Add Game</span>
+              </button>
+            </div>
           </div>
 
           <div className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:flex-wrap sm:gap-3">
@@ -405,13 +415,14 @@ export default function Library() {
 
               <button
                 onClick={() => setFilterForSale(!filterForSale)}
-                className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm font-medium ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm font-medium ${
                   filterForSale
                     ? 'bg-green-50 border-green-300 text-green-900'
                     : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                For Sale
+                <DollarSign className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>For Sale</span>
               </button>
 
               {activeFiltersCount > 0 && (
@@ -480,7 +491,7 @@ export default function Library() {
             <div className="bg-white rounded-lg border border-slate-200 p-3 sm:p-6 space-y-4 sm:space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {availableFilters.publishers.length > 0 && (
-                  <FilterSection
+                  <MultiSelectDropdown
                     title="Publisher"
                     options={availableFilters.publishers}
                     selected={filters.publishers}
@@ -507,7 +518,7 @@ export default function Library() {
                 )}
 
                 {availableFilters.years.length > 0 && (
-                  <FilterSection
+                  <MultiSelectDropdown
                     title="Year"
                     options={availableFilters.years}
                     selected={filters.years}
@@ -596,22 +607,20 @@ export default function Library() {
               <Plus className="w-10 h-10 text-slate-400" />
             </div>
             <h3 className="text-xl font-semibold text-slate-900 mb-2">
-              {library.length === 0 ? 'No games yet' : 'No games match your filters'}
+              {library.length === 0 ? 'No games yet' : 'No games match your search'}
             </h3>
             <p className="text-slate-600 mb-6">
               {library.length === 0
                 ? 'Start building your collection by scanning a barcode'
                 : 'Try adjusting your search or filters'}
             </p>
-            {library.length === 0 && (
-              <button
-                onClick={() => setShowSearchModal(true)}
-                className="inline-flex items-center space-x-2 bg-slate-900 text-white px-6 py-3 rounded-lg hover:bg-slate-800 transition font-medium"
-              >
-                <Plus className="w-5 h-5" />
-                <span>Add Your First Game</span>
-              </button>
-            )}
+            <button
+              onClick={() => setShowSearchModal(true)}
+              className="inline-flex items-center space-x-2 bg-slate-900 text-white px-6 py-3 rounded-lg hover:bg-slate-800 transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              <span>{library.length === 0 ? 'Add Your First Game' : 'Add a new game'}</span>
+            </button>
           </div>
         ) : layout === 'list' ? (
           <div className="space-y-3">
@@ -670,6 +679,7 @@ export default function Library() {
           entry={editingGame}
           onSave={handleSaveEdit}
           onClose={() => setEditingGame(null)}
+          onDelete={handleDeleteGame}
         />
       )}
     </div>
@@ -716,6 +726,65 @@ function FilterSection({
           </button>
         )}
       </div>
+    </div>
+  );
+}
+
+function MultiSelectDropdown({
+  title,
+  options,
+  selected,
+  onToggle,
+}: {
+  title: string;
+  options: string[];
+  selected: string[];
+  onToggle: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <h4 className="text-sm font-medium text-slate-900 mb-2">{title}</h4>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full px-3 py-2 text-left bg-white border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition flex items-center justify-between"
+      >
+        <span className="truncate">
+          {selected.length === 0 ? `Select ${title.toLowerCase()}...` : `${selected.length} selected`}
+        </span>
+        <ChevronDown className={`w-4 h-4 flex-shrink-0 ml-2 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-10"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="absolute z-20 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+            {options.length === 0 ? (
+              <div className="px-3 py-2 text-sm text-slate-500">No options available</div>
+            ) : (
+              options.map((option) => (
+                <label
+                  key={option}
+                  className="flex items-center space-x-2 px-3 py-2 hover:bg-slate-50 cursor-pointer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(option)}
+                    onChange={() => onToggle(option)}
+                    className="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer"
+                  />
+                  <span className="text-sm text-slate-700 capitalize">{option}</span>
+                </label>
+              ))
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

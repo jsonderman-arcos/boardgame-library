@@ -221,7 +221,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
           </div>
         )}
 
-        <div className="flex items-center space-x-1 mt-auto pt-2">
+        <div className="flex items-center justify-end space-x-1 mt-auto pt-2">
           <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}

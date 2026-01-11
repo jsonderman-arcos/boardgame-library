@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { X, Calendar } from 'lucide-react';
+import { X, Calendar, Trash2 } from 'lucide-react';
 import { UserLibraryEntry, Game } from '../lib/supabase';
 
 interface EditGameModalProps {
   entry: UserLibraryEntry & { game: Game };
   onSave: (entryId: string, updates: Partial<UserLibraryEntry>) => void;
   onClose: () => void;
+  onDelete: (entryId: string) => void;
 }
 
-export default function EditGameModal({ entry, onSave, onClose }: EditGameModalProps) {
+export default function EditGameModal({ entry, onSave, onClose, onDelete }: EditGameModalProps) {
   const [forSale, setForSale] = useState(entry.for_sale);
   const [ranking, setRanking] = useState(entry.personal_ranking || '');
   const [notes, setNotes] = useState(entry.notes || '');
@@ -20,7 +21,7 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
       for_sale: forSale,
       personal_ranking: ranking as 'high' | 'medium' | 'low' | undefined,
       notes: notes || undefined,
-      played_dates: playedDates.length > 0 ? playedDates : undefined,
+      played_dates: playedDates,
     });
   };
 
@@ -129,17 +130,27 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
           <div className="flex space-x-3 pt-4 border-t border-slate-200">
             <button
               type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition font-medium"
+              onClick={() => onDelete(entry.id)}
+              className="px-4 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition font-medium flex items-center space-x-2"
             >
-              Cancel
+              <Trash2 className="w-4 h-4" />
+              <span>Delete</span>
             </button>
-            <button
-              type="submit"
-              className="flex-1 px-4 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition font-medium"
-            >
-              Save Changes
-            </button>
+            <div className="flex-1 flex space-x-3">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition font-medium"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="flex-1 px-4 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition font-medium"
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </form>
       </div>
