@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Star, Trash2, Edit, DollarSign, Users, Clock, Plus, MoreVertical } from 'lucide-react';
 import { UserLibraryEntry, Game } from '../lib/supabase';
+import Tooltip from './Tooltip';
 
 interface GameCardProps {
   entry: UserLibraryEntry & { game: Game };
@@ -94,13 +95,14 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
 
           <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
             <div className="relative">
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="p-1.5 sm:p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition"
-                title="More options"
-              >
-                <MoreVertical className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </button>
+              <Tooltip content="More options">
+                <button
+                  onClick={() => setShowMenu(!showMenu)}
+                  className="p-1.5 sm:p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition"
+                >
+                  <MoreVertical className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                </button>
+              </Tooltip>
               {showMenu && (
                 <>
                   <div
@@ -144,26 +146,28 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                 </>
               )}
             </div>
-            <button
-              onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-              className={`p-1.5 sm:p-2 rounded-lg transition ${
-                entry.is_favorite
-                  ? 'bg-yellow-400 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
-              }`}
-              title={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
-            >
-              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={entry.is_favorite ? 'currentColor' : 'none'} />
-            </button>
-            {onAddPlay && (
+            <Tooltip content={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}>
               <button
-                onClick={() => onAddPlay(entry.id)}
-                className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
-                title="Log a play"
+                onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
+                className={`p-1.5 sm:p-2 rounded-lg transition ${
+                  entry.is_favorite
+                    ? 'bg-yellow-400 text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
+                }`}
               >
-                <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-xs sm:text-sm font-semibold">{playCount}</span>
+                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={entry.is_favorite ? 'currentColor' : 'none'} />
               </button>
+            </Tooltip>
+            {onAddPlay && (
+              <Tooltip content="Log a play">
+                <button
+                  onClick={() => onAddPlay(entry.id)}
+                  className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
+                >
+                  <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span className="text-xs sm:text-sm font-semibold">{playCount}</span>
+                </button>
+              </Tooltip>
             )}
           </div>
         </div>
@@ -223,13 +227,14 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
 
         <div className="flex items-center justify-end space-x-1 mt-auto pt-2">
           <div className="relative">
-            <button
-              onClick={() => setShowMenu(!showMenu)}
-              className="flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
-              title="More options"
-            >
-              <MoreVertical className="w-3.5 h-3.5" />
-            </button>
+            <Tooltip content="More options">
+              <button
+                onClick={() => setShowMenu(!showMenu)}
+                className="flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
+              >
+                <MoreVertical className="w-3.5 h-3.5" />
+              </button>
+            </Tooltip>
             {showMenu && (
               <>
                 <div
@@ -273,26 +278,28 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
               </>
             )}
           </div>
-          <button
-            onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-            className={`flex items-center justify-center px-2 py-1.5 rounded transition ${
-              entry.is_favorite
-                ? 'bg-yellow-400 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
-            }`}
-            title={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}
-          >
-            <Star className="w-3.5 h-3.5" fill={entry.is_favorite ? 'currentColor' : 'none'} />
-          </button>
-          {onAddPlay && (
+          <Tooltip content={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}>
             <button
-              onClick={() => onAddPlay(entry.id)}
-              className="flex items-center gap-1 px-2 py-1.5 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition font-medium"
-              title="Log a play"
+              onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
+              className={`flex items-center justify-center px-2 py-1.5 rounded transition ${
+                entry.is_favorite
+                  ? 'bg-yellow-400 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
+              }`}
             >
-              <Plus className="w-3.5 h-3.5" />
-              <span className="text-xs font-semibold">{playCount}</span>
+              <Star className="w-3.5 h-3.5" fill={entry.is_favorite ? 'currentColor' : 'none'} />
             </button>
+          </Tooltip>
+          {onAddPlay && (
+            <Tooltip content="Log a play">
+              <button
+                onClick={() => onAddPlay(entry.id)}
+                className="flex items-center gap-1 px-2 py-1.5 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition font-medium"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                <span className="text-xs font-semibold">{playCount}</span>
+              </button>
+            </Tooltip>
           )}
         </div>
       </div>

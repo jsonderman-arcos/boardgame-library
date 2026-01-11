@@ -17,6 +17,7 @@ import GameCard from './GameCard';
 import BarcodeScanner from './BarcodeScanner';
 import EditGameModal from './EditGameModal';
 import SearchSharedGamesModal from './SearchSharedGamesModal';
+import Tooltip from './Tooltip';
 
 type SortOption = 'name-asc' | 'name-desc' | 'date-added-desc' | 'date-added-asc' | 'plays-desc' | 'plays-asc';
 
@@ -370,25 +371,27 @@ export default function Library() {
                 className="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
               />
               {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
-                  title="Clear search"
-                >
-                  <X className="w-4 h-4 sm:w-5 sm:h-5" />
-                </button>
+                <Tooltip content="Clear search">
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                  >
+                    <X className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </Tooltip>
               )}
             </div>
 
             <div className="flex justify-end">
-              <button
-                onClick={() => setShowSearchModal(true)}
-                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
-                title="Add a new game to your library"
-              >
-                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Add Game</span>
-              </button>
+              <Tooltip content="Add a new game to your library">
+                <button
+                  onClick={() => setShowSearchModal(true)}
+                  className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
+                >
+                  <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span>Add Game</span>
+                </button>
+              </Tooltip>
             </div>
           </div>
 
@@ -463,36 +466,38 @@ export default function Library() {
               </div>
 
               <div className="flex items-center space-x-0.5 sm:space-x-1 border border-slate-300 rounded-lg p-0.5 sm:p-1">
-                <button
-                  onClick={() => {
-                    setUserLayout('grid');
-                    if (window.innerWidth > 480) {
-                      setLayout('grid');
-                    }
-                  }}
-                  className={`p-1.5 sm:p-2 rounded transition ${
-                    layout === 'grid'
-                      ? 'bg-slate-900 text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                  title="Grid view"
-                >
-                  <Grid3x3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
-                <button
-                  onClick={() => {
-                    setUserLayout('list');
-                    setLayout('list');
-                  }}
-                  className={`p-1.5 sm:p-2 rounded transition ${
-                    layout === 'list'
-                      ? 'bg-slate-900 text-white'
-                      : 'text-slate-600 hover:bg-slate-100'
-                  }`}
-                  title="List view"
-                >
-                  <List className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                </button>
+                <Tooltip content="Grid view">
+                  <button
+                    onClick={() => {
+                      setUserLayout('grid');
+                      if (window.innerWidth > 480) {
+                        setLayout('grid');
+                      }
+                    }}
+                    className={`p-1.5 sm:p-2 rounded transition ${
+                      layout === 'grid'
+                        ? 'bg-slate-900 text-white'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <Grid3x3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </button>
+                </Tooltip>
+                <Tooltip content="List view">
+                  <button
+                    onClick={() => {
+                      setUserLayout('list');
+                      setLayout('list');
+                    }}
+                    className={`p-1.5 sm:p-2 rounded transition ${
+                      layout === 'list'
+                        ? 'bg-slate-900 text-white'
+                        : 'text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <List className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  </button>
+                </Tooltip>
               </div>
             </div>
           </div>
