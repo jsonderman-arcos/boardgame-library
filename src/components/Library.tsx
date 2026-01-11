@@ -76,7 +76,7 @@ export default function Library() {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth <= 320) {
+      if (window.innerWidth <= 480) {
         setLayout('list');
       } else {
         setLayout(userLayout);
@@ -466,7 +466,7 @@ export default function Library() {
                 <button
                   onClick={() => {
                     setUserLayout('grid');
-                    if (window.innerWidth > 320) {
+                    if (window.innerWidth > 480) {
                       setLayout('grid');
                     }
                   }}
