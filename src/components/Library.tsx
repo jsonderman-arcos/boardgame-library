@@ -383,15 +383,13 @@ export default function Library() {
             </div>
 
             <div className="flex justify-end">
-              <Tooltip content="Add a new game to your library">
-                <button
-                  onClick={() => setShowSearchModal(true)}
-                  className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
-                >
-                  <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-                  <span>Add Game</span>
-                </button>
-              </Tooltip>
+              <button
+                onClick={() => setShowSearchModal(true)}
+                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
+              >
+                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span>Add Game</span>
+              </button>
             </div>
           </div>
 
