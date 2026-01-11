@@ -227,10 +227,10 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
         )}
 
         <div className="flex items-center space-x-1 mt-2">
-          <div className="relative flex-1">
+          <div className="relative">
             <button
               onClick={() => setShowMenu(!showMenu)}
-              className="w-full flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
+              className="flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
               title="More options"
             >
               <MoreVertical className="w-3.5 h-3.5" />
