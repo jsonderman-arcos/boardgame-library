@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { X, User, Mail, FileText, Lock } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { X, User, Mail, FileText, Lock, Upload, Check } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
@@ -7,6 +7,17 @@ interface ProfileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+const PREDEFINED_AVATARS = [
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Max',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Luna',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver',
+  'https://api.dicebear.com/7.x/avataaars/svg?seed=Bella',
+];
 
 export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
   const { profile, user, refreshProfile } = useAuth();
@@ -16,11 +27,13 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [passwordLoading, setPasswordLoading] = useState(false);
   const [error, setError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [success, setSuccess] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (profile) {
@@ -29,6 +42,46 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
       setAvatarUrl(profile.avatar_url || '');
     }
   }, [profile]);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || !e.target.files[0] || !user) return;
+
+    const file = e.target.files[0];
+
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload an image file');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError('Image size must be less than 2MB');
+      return;
+    }
+
+    setUploadingAvatar(true);
+    setError('');
+
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar-${Date.now()}.${fileExt}`;
+
+      const { error: uploadError, data } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      setAvatarUrl(publicUrl);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to upload avatar');
+    } finally {
+      setUploadingAvatar(false);
+    }
+  };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,18 +202,72 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
               </div>
 
               <div>
-                <label className="flex items-center space-x-2 text-sm font-medium text-slate-700 mb-2">
+                <label className="flex items-center space-x-2 text-sm font-medium text-slate-700 mb-3">
                   <User className="w-4 h-4" />
-                  <span>Avatar URL</span>
+                  <span>Profile Picture</span>
                 </label>
-                <input
-                  type="url"
-                  value={avatarUrl}
-                  onChange={(e) => setAvatarUrl(e.target.value)}
-                  placeholder="https://example.com/avatar.jpg"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-slate-900 focus:border-transparent transition"
-                />
-                <p className="mt-1 text-xs text-slate-500">Optional: URL to your profile picture</p>
+
+                <div className="flex items-center space-x-4 mb-4">
+                  {avatarUrl ? (
+                    <img
+                      src={avatarUrl}
+                      alt="Current avatar"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-slate-300"
+                    />
+                  ) : (
+                    <div className="w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center border-2 border-slate-300">
+                      <User className="w-10 h-10 text-slate-400" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleAvatarUpload}
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={uploadingAvatar}
+                      className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>{uploadingAvatar ? 'Uploading...' : 'Upload Photo'}</span>
+                    </button>
+                    <p className="mt-2 text-xs text-slate-500">Max 2MB. JPG, PNG, or GIF.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-sm text-slate-700 font-medium">Or choose a preset avatar:</p>
+                  <div className="grid grid-cols-4 gap-3">
+                    {PREDEFINED_AVATARS.map((avatar, index) => (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => setAvatarUrl(avatar)}
+                        className={`relative w-full aspect-square rounded-full overflow-hidden border-2 transition-all hover:scale-105 ${
+                          avatarUrl === avatar
+                            ? 'border-slate-900 ring-2 ring-slate-900 ring-offset-2'
+                            : 'border-slate-300 hover:border-slate-400'
+                        }`}
+                      >
+                        <img
+                          src={avatar}
+                          alt={`Avatar ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        {avatarUrl === avatar && (
+                          <div className="absolute inset-0 bg-slate-900 bg-opacity-40 flex items-center justify-center">
+                            <Check className="w-6 h-6 text-white" />
+                          </div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div>
