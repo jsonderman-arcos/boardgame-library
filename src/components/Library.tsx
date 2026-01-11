@@ -155,9 +155,17 @@ export default function Library() {
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'name-asc':
-          return a.game.name.localeCompare(b.game.name);
+          return a.game.name.localeCompare(b.game.name, 'en', {
+            sensitivity: 'base',
+            numeric: true,
+            ignorePunctuation: false
+          });
         case 'name-desc':
-          return b.game.name.localeCompare(a.game.name);
+          return b.game.name.localeCompare(a.game.name, 'en', {
+            sensitivity: 'base',
+            numeric: true,
+            ignorePunctuation: false
+          });
         case 'date-added-desc':
           return new Date(b.added_date).getTime() - new Date(a.added_date).getTime();
         case 'date-added-asc':
