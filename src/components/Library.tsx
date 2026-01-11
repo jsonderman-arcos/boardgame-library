@@ -32,6 +32,7 @@ export default function Library() {
   const [filterForSale, setFilterForSale] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [layout, setLayout] = useState<'grid' | 'list'>('grid');
+  const [userLayout, setUserLayout] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<SortOption>('name-asc');
 
   const [filters, setFilters] = useState({
@@ -71,6 +72,20 @@ export default function Library() {
       loadLibrary();
     }
   }, [user]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 320) {
+        setLayout('list');
+      } else {
+        setLayout(userLayout);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [userLayout]);
 
   useEffect(() => {
     let filtered = [...library];
@@ -428,7 +443,12 @@ export default function Library() {
 
               <div className="flex items-center space-x-1 border border-slate-300 rounded-lg p-1">
                 <button
-                  onClick={() => setLayout('grid')}
+                  onClick={() => {
+                    setUserLayout('grid');
+                    if (window.innerWidth > 320) {
+                      setLayout('grid');
+                    }
+                  }}
                   className={`p-2 rounded transition ${
                     layout === 'grid'
                       ? 'bg-slate-900 text-white'
@@ -439,7 +459,10 @@ export default function Library() {
                   <Grid3x3 className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setLayout('list')}
+                  onClick={() => {
+                    setUserLayout('list');
+                    setLayout('list');
+                  }}
                   className={`p-2 rounded transition ${
                     layout === 'list'
                       ? 'bg-slate-900 text-white'
