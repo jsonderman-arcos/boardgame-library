@@ -349,41 +349,41 @@ export default function Library() {
     <div className="min-h-screen bg-slate-50">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+      <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+        <div className="mb-4 sm:mb-8 space-y-3 sm:space-y-4">
+          <div className="flex flex-col gap-2 sm:gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search games..."
-                className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
               />
             </div>
 
             <button
               onClick={() => setShowSearchModal(true)}
-              className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-6 py-3 rounded-lg hover:bg-slate-800 transition font-medium"
+              className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
             >
-              <Plus className="w-5 h-5" />
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Add Game</span>
             </button>
           </div>
 
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <div className="flex items-center space-x-3 flex-wrap">
+          <div className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:flex-wrap sm:gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm ${
                   showFilters || activeFiltersCount > 0
                     ? 'bg-slate-900 text-white'
                     : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <Filter className="w-4 h-4" />
-                <span className="text-sm font-medium">Filters</span>
+                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="font-medium">Filters</span>
                 {activeFiltersCount > 0 && (
                   <span className="bg-white text-slate-900 text-xs px-1.5 py-0.5 rounded-full font-semibold">
                     {activeFiltersCount}
@@ -393,19 +393,19 @@ export default function Library() {
 
               <button
                 onClick={() => setFilterFavorites(!filterFavorites)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition ${
+                className={`flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm ${
                   filterFavorites
                     ? 'bg-yellow-50 border-yellow-300 text-yellow-900'
                     : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <Star className="w-4 h-4" fill={filterFavorites ? 'currentColor' : 'none'} />
-                <span className="text-sm font-medium">Favorites</span>
+                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={filterFavorites ? 'currentColor' : 'none'} />
+                <span className="font-medium">Favorites</span>
               </button>
 
               <button
                 onClick={() => setFilterForSale(!filterForSale)}
-                className={`px-4 py-2 rounded-lg border transition text-sm font-medium ${
+                className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm font-medium ${
                   filterForSale
                     ? 'bg-green-50 border-green-300 text-green-900'
                     : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
@@ -417,19 +417,19 @@ export default function Library() {
               {activeFiltersCount > 0 && (
                 <button
                   onClick={clearAllFilters}
-                  className="text-sm text-slate-600 hover:text-slate-900 underline"
+                  className="text-xs sm:text-sm text-slate-600 hover:text-slate-900 underline px-1"
                 >
                   Clear all
                 </button>
               )}
             </div>
 
-            <div className="flex items-center space-x-2">
-              <div className="relative">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <div className="relative flex-1 sm:flex-initial">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as SortOption)}
-                  className="appearance-none bg-white border border-slate-300 rounded-lg pl-3 pr-8 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none"
+                  className="appearance-none bg-white border border-slate-300 rounded-lg pl-2 sm:pl-3 pr-7 sm:pr-8 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 hover:bg-slate-50 transition cursor-pointer focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none w-full"
                 >
                   <option value="name-asc">Name (A-Z)</option>
                   <option value="name-desc">Name (Z-A)</option>
@@ -438,10 +438,10 @@ export default function Library() {
                   <option value="plays-desc">Most Played</option>
                   <option value="plays-asc">Least Played</option>
                 </select>
-                <ArrowUpDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                <ArrowUpDown className="absolute right-1.5 sm:right-2 top-1/2 transform -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 pointer-events-none" />
               </div>
 
-              <div className="flex items-center space-x-1 border border-slate-300 rounded-lg p-1">
+              <div className="flex items-center space-x-0.5 sm:space-x-1 border border-slate-300 rounded-lg p-0.5 sm:p-1">
                 <button
                   onClick={() => {
                     setUserLayout('grid');
@@ -449,36 +449,36 @@ export default function Library() {
                       setLayout('grid');
                     }
                   }}
-                  className={`p-2 rounded transition ${
+                  className={`p-1.5 sm:p-2 rounded transition ${
                     layout === 'grid'
                       ? 'bg-slate-900 text-white'
                       : 'text-slate-600 hover:bg-slate-100'
                   }`}
                   title="Grid view"
                 >
-                  <Grid3x3 className="w-4 h-4" />
+                  <Grid3x3 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 <button
                   onClick={() => {
                     setUserLayout('list');
                     setLayout('list');
                   }}
-                  className={`p-2 rounded transition ${
+                  className={`p-1.5 sm:p-2 rounded transition ${
                     layout === 'list'
                       ? 'bg-slate-900 text-white'
                       : 'text-slate-600 hover:bg-slate-100'
                   }`}
                   title="List view"
                 >
-                  <List className="w-4 h-4" />
+                  <List className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             </div>
           </div>
 
           {showFilters && (
-            <div className="bg-white rounded-lg border border-slate-200 p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg border border-slate-200 p-3 sm:p-6 space-y-4 sm:space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {availableFilters.publishers.length > 0 && (
                   <FilterSection
                     title="Publisher"
