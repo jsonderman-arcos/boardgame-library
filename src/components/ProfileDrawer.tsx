@@ -265,20 +265,6 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
                 </button>
               </form>
             </div>
-
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <h3 className="text-sm font-medium text-slate-700 mb-3">Library Stats</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-slate-50 rounded-lg">
-                  <p className="text-2xl font-bold text-slate-900">{profile?.total_games || 0}</p>
-                  <p className="text-sm text-slate-600">Total Games</p>
-                </div>
-                <div className="p-4 bg-slate-50 rounded-lg">
-                  <p className="text-2xl font-bold text-slate-900">{profile?.favorite_count || 0}</p>
-                  <p className="text-sm text-slate-600">Favorites</p>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
