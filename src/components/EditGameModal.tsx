@@ -26,13 +26,11 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
 
   const addPlayedDate = () => {
     const today = new Date().toISOString().split('T')[0];
-    if (!playedDates.includes(today)) {
-      setPlayedDates([...playedDates, today].sort().reverse());
-    }
+    setPlayedDates([...playedDates, today].sort().reverse());
   };
 
-  const removePlayedDate = (date: string) => {
-    setPlayedDates(playedDates.filter(d => d !== date));
+  const removePlayedDate = (index: number) => {
+    setPlayedDates(playedDates.filter((_, i) => i !== index));
   };
 
   return (
@@ -93,27 +91,37 @@ export default function EditGameModal({ entry, onSave, onClose }: EditGameModalP
             </div>
             {playedDates.length > 0 && (
               <div className="space-y-2">
-                {playedDates.map(date => (
-                  <div
-                    key={date}
-                    className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
-                  >
-                    <span className="text-sm text-slate-700">
-                      {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removePlayedDate(date)}
-                      className="text-red-600 hover:text-red-700"
+                {playedDates.map((date, index) => {
+                  const dateCount = playedDates.filter(d => d === date).slice(0, playedDates.findIndex((d, i) => d === date && i === index) + 1).length;
+                  const totalForDate = playedDates.filter(d => d === date).length;
+
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
                     >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                ))}
+                      <span className="text-sm text-slate-700">
+                        {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                        {totalForDate > 1 && (
+                          <span className="ml-2 text-xs text-slate-500">
+                            (play {dateCount} of {totalForDate})
+                          </span>
+                        )}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removePlayedDate(index)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
