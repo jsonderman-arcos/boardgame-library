@@ -1,0 +1,43 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint
+        run: npm run lint --workspace arcos-harmony-design-system
+
+      - name: Format check
+        run: npm run format:check --workspace arcos-harmony-design-system
+
+      - name: Type check
+        run: npm run typecheck --workspace arcos-harmony-design-system
+
+      - name: Build tokens
+        run: npm run tokens:build --workspace arcos-harmony-design-system
+
+      - name: Build theme
+        run: npm run theme:build --workspace arcos-harmony-design-system
+
+      - name: Build package
+        run: npm run build --workspace arcos-harmony-design-system
+
+      - name: Build Storybook
+        run: npm run storybook:build --workspace arcos-harmony-design-system
