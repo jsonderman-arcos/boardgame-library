@@ -3,11 +3,12 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AuthForm from './components/AuthForm';
 import Library from './components/Library';
 import AdminPanel from './components/AdminPanel';
-import { Shield, BookOpen } from 'lucide-react';
+import GameNiteTools from './components/GameNiteTools';
+import { Shield, BookOpen, Sparkles } from 'lucide-react';
 
 function AppContent() {
   const { user, profile, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'library' | 'admin'>('library');
+  const [activeTab, setActiveTab] = useState<'library' | 'admin' | 'game-nite'>('library');
 
   if (loading) {
     return (
@@ -44,6 +45,17 @@ function AppContent() {
               <span>My Library</span>
             </button>
             <button
+              onClick={() => setActiveTab('game-nite')}
+              className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
+                activeTab === 'game-nite'
+                  ? 'border-slate-900 text-slate-900'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
+              }`}
+            >
+              <Sparkles className="w-5 h-5" />
+              <span>Game Nite Tools</span>
+            </button>
+            <button
               onClick={() => setActiveTab('admin')}
               className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
                 activeTab === 'admin'
@@ -58,7 +70,7 @@ function AppContent() {
         </div>
       </div>
 
-      {activeTab === 'library' ? <Library /> : <AdminPanel />}
+      {activeTab === 'library' ? <Library /> : activeTab === 'game-nite' ? <GameNiteTools /> : <AdminPanel />}
     </div>
   );
 }
