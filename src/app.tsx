@@ -3,12 +3,11 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AuthForm from './components/AuthForm';
 import Library from './components/Library';
 import AdminPanel from './components/AdminPanel';
-import GameNiteTools from './components/GameNiteTools';
-import { Shield, BookOpen, Dices } from 'lucide-react';
+import { Shield, BookOpen } from 'lucide-react';
 
 function AppContent() {
   const { user, profile, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'library' | 'game-nite-tools' | 'admin'>('library');
+  const [activeTab, setActiveTab] = useState<'library' | 'admin'>('library');
 
   if (loading) {
     return (
@@ -23,6 +22,10 @@ function AppContent() {
   }
 
   const isAdmin = profile?.is_admin || false;
+
+  if (!isAdmin) {
+    return <Library />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -41,36 +44,21 @@ function AppContent() {
               <span>My Library</span>
             </button>
             <button
-              onClick={() => setActiveTab('game-nite-tools')}
+              onClick={() => setActiveTab('admin')}
               className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
-                activeTab === 'game-nite-tools'
+                activeTab === 'admin'
                   ? 'border-slate-900 text-slate-900'
                   : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
               }`}
             >
-              <Dices className="w-5 h-5" />
-              <span>Game Nite Tools</span>
+              <Shield className="w-5 h-5" />
+              <span>Admin</span>
             </button>
-            {isAdmin && (
-              <button
-                onClick={() => setActiveTab('admin')}
-                className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
-                  activeTab === 'admin'
-                    ? 'border-slate-900 text-slate-900'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-                }`}
-              >
-                <Shield className="w-5 h-5" />
-                <span>Admin</span>
-              </button>
-            )}
           </nav>
         </div>
       </div>
 
-      {activeTab === 'library' && <Library />}
-      {activeTab === 'game-nite-tools' && <GameNiteTools />}
-      {activeTab === 'admin' && <AdminPanel />}
+      {activeTab === 'library' ? <Library /> : <AdminPanel />}
     </div>
   );
 }
