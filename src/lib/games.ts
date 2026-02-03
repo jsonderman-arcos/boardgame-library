@@ -101,7 +101,11 @@ export async function removeGameFromLibrary(entryId: string) {
 
 export async function lookupBarcode(barcode: string): Promise<Partial<Game>> {
   try {
-    const response = await fetch(`https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=YOUR_API_KEY`);
+    const response = await fetch(`https://api.gameupc.com/test/upc/${barcode}`, {
+      headers: {
+        'x-api-key': 'test_test_test_test_test'
+      }
+    });
 
     if (!response.ok) {
       throw new Error('Barcode lookup failed');
@@ -109,14 +113,15 @@ export async function lookupBarcode(barcode: string): Promise<Partial<Game>> {
 
     const result = await response.json();
 
-    if (result.products && result.products.length > 0) {
-      const product = result.products[0];
+    // GameUPC returns bgg_info array with game matches
+    if (result.bgg_info && result.bgg_info.length > 0) {
+      const game = result.bgg_info[0];
       return {
         barcode,
-        name: product.title || product.product_name || 'Unknown Game',
-        publisher: product.brand || product.manufacturer,
-        year: product.release_date?.split('-')[0],
-        cover_image: product.images?.[0],
+        name: game.name || 'Unknown Game',
+        bgg_id: game.id,
+        // GameUPC primarily provides BGG mapping - additional metadata like
+        // publisher, year, and cover_image would need to be fetched from BGG API
       };
     }
 
@@ -131,4 +136,37 @@ export async function lookupBarcode(barcode: string): Promise<Partial<Game>> {
       name: 'Unknown Game',
     };
   }
+}
+
+export async function enrichSharedGameWithBggId(barcode: string): Promise<Game | null> {
+  // First, get the existing game by barcode
+  const existingGame = await getGameByBarcode(barcode);
+
+  if (!existingGame) {
+    return null;
+  }
+
+  // If bgg_id is already set, return the game as-is
+  if (existingGame.bgg_id) {
+    return existingGame;
+  }
+
+  // Look up the barcode using GameUPC API
+  const gameData = await lookupBarcode(barcode);
+
+  // If we got a bgg_id from the API, update the shared_games record
+  if (gameData.bgg_id) {
+    const { data, error } = await supabase
+      .from('shared_games')
+      .update({ bgg_id: gameData.bgg_id })
+      .eq('id', existingGame.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Game;
+  }
+
+  // No bgg_id found, return the existing game
+  return existingGame;
 }
