@@ -40,10 +40,22 @@ export async function searchSharedGames(query: string) {
 }
 
 export async function getGameByBarcode(barcode: string) {
+  // Generate barcode variations to support UPC-A (12-digit) and EAN-13 (13-digit) formats
+  const variations = [barcode]; // Original barcode first (priority)
+
+  if (barcode.length === 12 && /^\d{12}$/.test(barcode)) {
+    // 12-digit UPC-A: also check EAN-13 with 00 prefix
+    variations.push(`00${barcode}`);
+  } else if (barcode.length === 13 && barcode.startsWith('00')) {
+    // 13-digit EAN starting with 00: also check UPC-A (remove prefix)
+    variations.push(barcode.slice(2));
+  }
+
   const { data, error } = await supabase
     .from('shared_games')
     .select('*')
-    .eq('barcode', barcode)
+    .in('barcode', variations)
+    .limit(1)
     .maybeSingle();
 
   if (error) throw error;

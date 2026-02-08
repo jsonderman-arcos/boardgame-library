@@ -20,7 +20,7 @@ export interface Game {
   cover_image?: string;
   game_type?: string[];
   game_category?: string[];
-  game_mechanism?: string[];
+  game_mechanic?: string[];
   game_family?: string[];
   min_players?: number;
   max_players?: number;

@@ -9,9 +9,8 @@ import {
   addGameToLibrary,
   updateLibraryEntry,
   removeGameFromLibrary,
-  lookupBarcode,
-  enrichSharedGameWithBggId,
 } from '../lib/games';
+import { lookupBarcodeWithBgg, submitBarcodeToGameUpc } from '../lib/bgg';
 import { UserLibraryEntry, Game } from '../lib/supabase';
 import Header from './Header';
 import GameCard from './GameCard';
@@ -230,27 +229,36 @@ export default function Library() {
 
       if (!game) {
         try {
-          const gameData = await lookupBarcode(barcode);
+          // Use new secure BGG lookup that fetches full game data
+          const gameData = await lookupBarcodeWithBgg(barcode);
           game = await createSharedGame({
             barcode,
             name: gameData.name || 'Unknown Game',
             bgg_id: gameData.bgg_id,
             publisher: gameData.publisher,
-            year: gameData.year,
+            year: gameData.year?.toString(),
             cover_image: gameData.cover_image,
+            min_players: gameData.min_players,
+            max_players: gameData.max_players,
+            playtime_minutes: gameData.playtime_minutes,
+            game_type: gameData.game_type,
+            game_category: gameData.game_category,
+            game_mechanic: gameData.game_mechanic,
+            game_family: gameData.game_family,
           });
+
+          // If the barcode was found via a backup API (not GameUPC), submit to GameUPC
+          if (gameData.source !== 'gameupc' && gameData.bgg_id) {
+            submitBarcodeToGameUpc(barcode, gameData.bgg_id).catch((err) => {
+              console.error('Failed to submit barcode mapping (non-fatal):', err);
+            });
+          }
         } catch (lookupError) {
-          console.error('Barcode not found in database:', lookupError);
+          console.error('Barcode lookup failed:', lookupError);
           setScannedBarcode(barcode);
           setShowScanner(false);
           setShowManualEntry(true);
           return;
-        }
-      } else if (!game.bgg_id) {
-        // If game exists but bgg_id is missing, try to enrich it
-        const enrichedGame = await enrichSharedGameWithBggId(barcode);
-        if (enrichedGame) {
-          game = enrichedGame;
         }
       }
 
@@ -266,20 +274,47 @@ export default function Library() {
 
   const handleManualGameEntry = async (gameData: {
     barcode: string;
+    bgg_id?: number;
     name: string;
     publisher?: string;
-    year?: string;
+    year?: number;
     cover_image?: string;
+    min_players?: number;
+    max_players?: number;
+    playtime_minutes?: number;
+    min_age?: number;
+    game_type?: string[];
+    game_category?: string[];
+    game_mechanic?: string[];
+    description?: string;
   }) => {
     if (!user) return;
 
     try {
-      let game = await createSharedGame(gameData);
+      // Create game with all BGG data from manual search
+      const game = await createSharedGame({
+        barcode: gameData.barcode,
+        bgg_id: gameData.bgg_id,
+        name: gameData.name,
+        publisher: gameData.publisher,
+        year: gameData.year?.toString(),
+        cover_image: gameData.cover_image,
+        min_players: gameData.min_players,
+        max_players: gameData.max_players,
+        playtime_minutes: gameData.playtime_minutes,
+        min_age: gameData.min_age,
+        game_type: gameData.game_type,
+        game_category: gameData.game_category,
+        game_mechanic: gameData.game_mechanic,
+        game_family: gameData.game_family,
+      });
 
-      // Try to enrich with bgg_id from GameUPC API
-      const enrichedGame = await enrichSharedGameWithBggId(gameData.barcode);
-      if (enrichedGame) {
-        game = enrichedGame;
+      // If we have a BGG ID, submit the barcode mapping to GameUPC
+      // This helps improve the GameUPC database for future users
+      if (gameData.bgg_id && gameData.barcode) {
+        submitBarcodeToGameUpc(gameData.barcode, gameData.bgg_id).catch((err) => {
+          console.error('Failed to submit barcode mapping (non-fatal):', err);
+        });
       }
 
       await addGameToLibrary(user.id, game.id);
