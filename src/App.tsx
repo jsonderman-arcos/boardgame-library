@@ -3,12 +3,11 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import AuthForm from './components/AuthForm';
 import Library from './components/Library';
 import AdminPanel from './components/AdminPanel';
-import GameNiteTools from './components/GameNiteTools';
-import { Shield, BookOpen, Sparkles } from 'lucide-react';
+import { Shield, BookOpen } from 'lucide-react';
 
 function AppContent() {
   const { user, profile, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState<'library' | 'gameNite' | 'admin'>('library');
+  const [activeTab, setActiveTab] = useState<'library' | 'admin'>('library');
 
   if (loading) {
     return (
@@ -24,45 +23,10 @@ function AppContent() {
 
   const isAdmin = profile?.is_admin || false;
 
-  // Non-admin users only see Library and Game Nite Tools
   if (!isAdmin) {
-    return (
-      <div className="min-h-screen bg-slate-50">
-        <div className="border-b border-slate-200 bg-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <nav className="flex space-x-1">
-              <button
-                onClick={() => setActiveTab('library')}
-                className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
-                  activeTab === 'library'
-                    ? 'border-slate-900 text-slate-900'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-                }`}
-              >
-                <BookOpen className="w-5 h-5" />
-                <span>My Library</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('gameNite')}
-                className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
-                  activeTab === 'gameNite'
-                    ? 'border-slate-900 text-slate-900'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-                }`}
-              >
-                <Sparkles className="w-5 h-5" />
-                <span>Game Nite Tools</span>
-              </button>
-            </nav>
-          </div>
-        </div>
-
-        {activeTab === 'library' ? <Library /> : <GameNiteTools />}
-      </div>
-    );
+    return <Library />;
   }
 
-  // Admin users see all three tabs
   return (
     <div className="min-h-screen bg-slate-50">
       <div className="border-b border-slate-200 bg-white">
@@ -80,17 +44,6 @@ function AppContent() {
               <span>My Library</span>
             </button>
             <button
-              onClick={() => setActiveTab('gameNite')}
-              className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
-                activeTab === 'gameNite'
-                  ? 'border-slate-900 text-slate-900'
-                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
-              }`}
-            >
-              <Sparkles className="w-5 h-5" />
-              <span>Game Nite Tools</span>
-            </button>
-            <button
               onClick={() => setActiveTab('admin')}
               className={`flex items-center space-x-2 px-6 py-4 font-medium border-b-2 transition ${
                 activeTab === 'admin'
@@ -105,7 +58,7 @@ function AppContent() {
         </div>
       </div>
 
-      {activeTab === 'library' ? <Library /> : activeTab === 'gameNite' ? <GameNiteTools /> : <AdminPanel />}
+      {activeTab === 'library' ? <Library /> : <AdminPanel />}
     </div>
   );
 }

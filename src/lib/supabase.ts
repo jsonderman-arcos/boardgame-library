@@ -13,6 +13,7 @@ export interface Game {
   id: string;
   barcode: string;
   name: string;
+  bgg_id?: number;
   publisher?: string;
   year?: string;
   edition?: string;

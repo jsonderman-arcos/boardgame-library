@@ -10,6 +10,7 @@ import {
   updateLibraryEntry,
   removeGameFromLibrary,
   lookupBarcode,
+  enrichSharedGameWithBggId,
 } from '../lib/games';
 import { UserLibraryEntry, Game } from '../lib/supabase';
 import Header from './Header';
@@ -233,6 +234,7 @@ export default function Library() {
           game = await createSharedGame({
             barcode,
             name: gameData.name || 'Unknown Game',
+            bgg_id: gameData.bgg_id,
             publisher: gameData.publisher,
             year: gameData.year,
             cover_image: gameData.cover_image,
@@ -243,6 +245,12 @@ export default function Library() {
           setShowScanner(false);
           setShowManualEntry(true);
           return;
+        }
+      } else if (!game.bgg_id) {
+        // If game exists but bgg_id is missing, try to enrich it
+        const enrichedGame = await enrichSharedGameWithBggId(barcode);
+        if (enrichedGame) {
+          game = enrichedGame;
         }
       }
 
@@ -266,7 +274,14 @@ export default function Library() {
     if (!user) return;
 
     try {
-      const game = await createSharedGame(gameData);
+      let game = await createSharedGame(gameData);
+
+      // Try to enrich with bgg_id from GameUPC API
+      const enrichedGame = await enrichSharedGameWithBggId(gameData.barcode);
+      if (enrichedGame) {
+        game = enrichedGame;
+      }
+
       await addGameToLibrary(user.id, game.id);
       await loadLibrary();
       await refreshProfile();
