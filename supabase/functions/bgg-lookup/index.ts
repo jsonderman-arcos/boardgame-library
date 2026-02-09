@@ -2,6 +2,7 @@
 // This keeps the BGG API token server-side only
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const BGG_API_TOKEN = Deno.env.get('BGG_API_TOKEN');
 const BGG_API_BASE_URL = 'https://boardgamegeek.com/xmlapi2';
@@ -11,14 +12,18 @@ interface BggLookupRequest {
   searchName?: string;
 }
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 serve(async (req) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        ...corsHeaders,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
       },
     });
   }
@@ -27,16 +32,36 @@ serve(async (req) => {
     if (req.method !== 'POST') {
       return new Response(
         JSON.stringify({ error: 'Method not allowed' }),
-        { status: 405, headers: { 'Content-Type': 'application/json' } }
+        { status: 405, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
     }
 
-    if (!BGG_API_TOKEN) {
-      console.error('BGG_API_TOKEN not configured');
-      return new Response(
-        JSON.stringify({ error: 'Server configuration error' }),
-        { status: 500, headers: { 'Content-Type': 'application/json' } }
-      );
+    // Optional JWT verification for logged-in users
+    const authHeader = req.headers.get('Authorization');
+    if (authHeader) {
+      try {
+        // Create Supabase client with the auth token
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+          {
+            global: {
+              headers: { Authorization: authHeader },
+            },
+          }
+        );
+
+        // Verify the user is authenticated
+        const { data: { user }, error: authError } = await supabaseClient.auth.getUser();
+
+        if (authError || !user) {
+          console.warn('Auth verification failed:', authError);
+          // Continue anyway - don't block the request
+        }
+      } catch (authError) {
+        console.warn('Auth check error:', authError);
+        // Continue anyway - don't block the request
+      }
     }
 
     const body: BggLookupRequest = await req.json();
@@ -52,17 +77,22 @@ serve(async (req) => {
     } else {
       return new Response(
         JSON.stringify({ error: 'Either bggId or searchName is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
+        { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
     }
 
-    // Make request to BGG API with token
-    const bggResponse = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${BGG_API_TOKEN}`,
-        'Accept': 'application/xml',
-      },
-    });
+    // Make request to BGG API with optional token
+    const headers: Record<string, string> = {
+      'Accept': 'application/xml',
+      'User-Agent': 'BoardGameLibrary/1.0',
+    };
+
+    // Add Authorization header if token is available
+    if (BGG_API_TOKEN) {
+      headers['Authorization'] = `Bearer ${BGG_API_TOKEN}`;
+    }
+
+    const bggResponse = await fetch(url, { headers });
 
     if (!bggResponse.ok) {
       const errorText = await bggResponse.text();
@@ -72,7 +102,7 @@ serve(async (req) => {
           error: 'BGG API request failed',
           status: bggResponse.status
         }),
-        { status: bggResponse.status, headers: { 'Content-Type': 'application/json' } }
+        { status: bggResponse.status, headers: { 'Content-Type': 'application/json', ...corsHeaders } }
       );
     }
 
@@ -88,7 +118,7 @@ serve(async (req) => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
         }
       }
     );
@@ -103,7 +133,7 @@ serve(async (req) => {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
         }
       }
     );

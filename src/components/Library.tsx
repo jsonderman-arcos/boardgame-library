@@ -32,6 +32,7 @@ export default function Library() {
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [scannedBarcode, setScannedBarcode] = useState<string>('');
   const [editingGame, setEditingGame] = useState<(UserLibraryEntry & { game: Game }) | null>(null);
+  const [showDuplicateModal, setShowDuplicateModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterFavorites, setFilterFavorites] = useState(false);
   const [filterForSale, setFilterForSale] = useState(false);
@@ -262,13 +263,21 @@ export default function Library() {
         }
       }
 
+      // Check if game is already in the user's library
+      const isInLibrary = library.some((entry) => entry.game_id === game.id);
+      if (isInLibrary) {
+        setShowScanner(false);
+        setShowDuplicateModal(true);
+        return;
+      }
+
       await addGameToLibrary(user.id, game.id);
       await loadLibrary();
       await refreshProfile();
       setShowScanner(false);
     } catch (error) {
       console.error('Error adding game:', error);
-      alert('Failed to add game. It may already be in your library.');
+      alert('Failed to add game. Please try again.');
     }
   };
 
@@ -302,11 +311,9 @@ export default function Library() {
         min_players: gameData.min_players,
         max_players: gameData.max_players,
         playtime_minutes: gameData.playtime_minutes,
-        min_age: gameData.min_age,
         game_type: gameData.game_type,
         game_category: gameData.game_category,
         game_mechanic: gameData.game_mechanic,
-        game_family: gameData.game_family,
       });
 
       // If we have a BGG ID, submit the barcode mapping to GameUPC
@@ -795,6 +802,23 @@ export default function Library() {
           onClose={() => setEditingGame(null)}
           onDelete={handleDeleteGame}
         />
+      )}
+
+      {showDuplicateModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+            <h2 className="text-2xl font-bold text-slate-900 mb-4">Already in Library</h2>
+            <p className="text-slate-700 mb-6">
+              This game is already in your library.
+            </p>
+            <button
+              onClick={() => setShowDuplicateModal(false)}
+              className="w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition"
+            >
+              OK
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
