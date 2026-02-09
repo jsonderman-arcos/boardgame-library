@@ -118,14 +118,16 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
         </div>
 
         <div className="p-6 space-y-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm text-yellow-800">
-              We couldn't find this barcode in our database. Please search for the game on BoardGameGeek.
-            </p>
-            <p className="text-xs text-yellow-700 mt-2">
-              Barcode: <span className="font-mono font-semibold">{barcode}</span>
-            </p>
-          </div>
+          {barcode && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+              <p className="text-sm text-yellow-800">
+                We couldn't find this barcode in our database. Please search for the game on BoardGameGeek.
+              </p>
+              <p className="text-xs text-yellow-700 mt-2">
+                Barcode: <span className="font-mono font-semibold">{barcode}</span>
+              </p>
+            </div>
+          )}
 
           {/* Search Form */}
           {!selectedGame && (

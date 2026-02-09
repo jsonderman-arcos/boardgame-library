@@ -45,6 +45,7 @@ export async function lookupBggGame(bggId: number): Promise<BggGameData> {
 
 /**
  * Search for games by name
+ * Results are sorted to prioritize exact matches
  */
 export async function searchBggGames(searchName: string): Promise<BggSearchResult[]> {
   const { data, error } = await supabase.functions.invoke('bgg-lookup', {
@@ -56,7 +57,29 @@ export async function searchBggGames(searchName: string): Promise<BggSearchResul
     throw new Error(`Failed to search BGG: ${error.message}`);
   }
 
-  return data.results || [];
+  const results = data.results || [];
+
+  // Sort results to prioritize exact matches
+  const searchLower = searchName.toLowerCase().trim();
+  return results.sort((a: BggSearchResult, b: BggSearchResult) => {
+    const aNameLower = a.name.toLowerCase();
+    const bNameLower = b.name.toLowerCase();
+
+    // Exact match gets highest priority
+    const aExact = aNameLower === searchLower;
+    const bExact = bNameLower === searchLower;
+    if (aExact && !bExact) return -1;
+    if (!aExact && bExact) return 1;
+
+    // Then prioritize names that start with the search term
+    const aStarts = aNameLower.startsWith(searchLower);
+    const bStarts = bNameLower.startsWith(searchLower);
+    if (aStarts && !bStarts) return -1;
+    if (!aStarts && bStarts) return 1;
+
+    // Finally, sort by year (newer first) to help distinguish versions
+    return (b.year || 0) - (a.year || 0);
+  });
 }
 
 /**
