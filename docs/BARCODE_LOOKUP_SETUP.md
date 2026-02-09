@@ -53,8 +53,10 @@ supabase link --project-ref your-project-ref
 supabase secrets set BARCODELOOKUP_API_KEY=p5ec4bujdumc41coc93rj0dxcdviif
 
 # (Optional) Set your UPCItemDB key for higher limits
-supabase secrets set UPCITEMDB_USER_KEY=your-upcitemdb-key
-supabase secrets set UPCITEMDB_KEY_TYPE=3scale
+# NOTE: UPCITEMDB secrets are NOT required - the function automatically uses
+# the free trial endpoint (https://api.upcitemdb.com/prod/trial/lookup) if not set
+# supabase secrets set UPCITEMDB_USER_KEY=your-upcitemdb-key
+# supabase secrets set UPCITEMDB_KEY_TYPE=3scale
 
 # Deploy the function
 supabase functions deploy barcode-lookup

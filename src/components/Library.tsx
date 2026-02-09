@@ -769,6 +769,11 @@ export default function Library() {
         <BarcodeScanner
           onScan={handleScanBarcode}
           onClose={() => setShowScanner(false)}
+          onManualEntry={() => {
+            setShowScanner(false);
+            setScannedBarcode('');
+            setShowManualEntry(true);
+          }}
         />
       )}
 

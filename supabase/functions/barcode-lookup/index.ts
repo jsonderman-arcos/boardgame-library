@@ -5,6 +5,7 @@ import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
 const GAMEUPC_API_KEY = Deno.env.get('GAMEUPC_API_KEY');
 const BARCODELOOKUP_API_KEY = Deno.env.get('BARCODELOOKUP_API_KEY');
+// UPCITEMDB is optional - uses free trial endpoint if not set
 const UPCITEMDB_USER_KEY = Deno.env.get('UPCITEMDB_USER_KEY');
 const UPCITEMDB_KEY_TYPE = Deno.env.get('UPCITEMDB_KEY_TYPE') || '3scale';
 

@@ -4,6 +4,7 @@ import { Camera, X, Loader } from 'lucide-react';
 interface BarcodeScannerProps {
   onScan: (barcode: string) => void;
   onClose: () => void;
+  onManualEntry: () => void;
 }
 
 declare global {
@@ -12,7 +13,7 @@ declare global {
   }
 }
 
-export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps) {
+export default function BarcodeScanner({ onScan, onClose, onManualEntry }: BarcodeScannerProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string>('');
   const [detectedBarcode, setDetectedBarcode] = useState<string>('');
@@ -129,6 +130,15 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
                 <Camera className="w-5 h-5" />
                 <span>Start Scanning</span>
               </button>
+
+              <div className="text-center">
+                <button
+                  onClick={onManualEntry}
+                  className="text-sm text-slate-600 hover:text-slate-900 underline transition"
+                >
+                  Can't scan? Search by title instead
+                </button>
+              </div>
             </div>
           ) : (
             <div className="space-y-4">
