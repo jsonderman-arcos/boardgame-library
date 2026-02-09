@@ -210,4 +210,37 @@
       animation: fadeIn 0.5s ease-in;
     }
   }
+
+  /* Custom styles for html5-qrcode barcode scanner */
+  #barcode-scanner video,
+  [id^="barcode-scanner-"] video {
+    border-radius: 0.5rem;
+    width: 100% !important;
+  }
+
+  #barcode-scanner,
+  [id^="barcode-scanner-"] {
+    border-radius: 0.5rem;
+  }
+
+  /* Hide the default html5-qrcode UI elements we don't need */
+  #barcode-scanner__scan_region,
+  [id^="barcode-scanner-"]__scan_region {
+    border: none !important;
+  }
+
+  #barcode-scanner__dashboard,
+  [id^="barcode-scanner-"]__dashboard {
+    display: none !important;
+  }
+
+  #barcode-scanner__dashboard_section,
+  [id^="barcode-scanner-"]__dashboard_section {
+    display: none !important;
+  }
+
+  #barcode-scanner__header_message,
+  [id^="barcode-scanner-"]__header_message {
+    display: none !important;
+  }
 }

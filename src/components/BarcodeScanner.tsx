@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Camera, X, Loader } from 'lucide-react';
+import { Html5Qrcode } from 'html5-qrcode';
 
 interface BarcodeScannerProps {
   onScan: (barcode: string) => void;
@@ -7,37 +8,28 @@ interface BarcodeScannerProps {
   onManualEntry: () => void;
 }
 
-declare global {
-  interface Window {
-    BarcodeDetector: any;
-  }
-}
-
 export default function BarcodeScanner({ onScan, onClose, onManualEntry }: BarcodeScannerProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string>('');
-  const [detectedBarcode, setDetectedBarcode] = useState<string>('');
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const streamRef = useRef<MediaStream | null>(null);
-  const scanIntervalRef = useRef<number | null>(null);
+  const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
+  const scannerIdRef = useRef<string>('barcode-scanner-' + Math.random().toString(36).substring(7));
 
   useEffect(() => {
     return () => {
-      stopScanning();
+      if (html5QrCodeRef.current) {
+        html5QrCodeRef.current.stop().catch(console.error);
+      }
     };
   }, []);
 
-  const stopScanning = () => {
-    if (scanIntervalRef.current) {
-      clearInterval(scanIntervalRef.current);
-      scanIntervalRef.current = null;
-    }
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-    if (videoRef.current) {
-      videoRef.current.srcObject = null;
+  const stopScanning = async () => {
+    if (html5QrCodeRef.current) {
+      try {
+        await html5QrCodeRef.current.stop();
+        html5QrCodeRef.current.clear();
+      } catch (err) {
+        console.error('Error stopping scanner:', err);
+      }
     }
   };
 
@@ -46,45 +38,34 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
     setIsScanning(true);
 
     try {
-      if (!('BarcodeDetector' in window)) {
-        setError('Barcode scanning is not supported in this browser. Please use Chrome or Edge on desktop, or Chrome on Android.');
-        setIsScanning(false);
-        return;
-      }
+      const scannerId = scannerIdRef.current;
+      html5QrCodeRef.current = new Html5Qrcode(scannerId);
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' }
-      });
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 150 },
+        aspectRatio: 1.777778
+      };
 
-      streamRef.current = stream;
+      const qrCodeSuccessCallback = (decodedText: string) => {
+        console.log('Barcode detected:', decodedText);
+        stopScanning();
+        onScan(decodedText);
+      };
 
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+      const qrCodeErrorCallback = () => {
+        // Silent - this fires frequently when no barcode is detected
+      };
 
-        const barcodeDetector = new window.BarcodeDetector({
-          formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e']
-        });
-
-        scanIntervalRef.current = window.setInterval(async () => {
-          if (videoRef.current && videoRef.current.readyState === videoRef.current.HAVE_ENOUGH_DATA) {
-            try {
-              const barcodes = await barcodeDetector.detect(videoRef.current);
-              if (barcodes.length > 0) {
-                const barcode = barcodes[0].rawValue;
-                setDetectedBarcode(barcode);
-                stopScanning();
-                onScan(barcode);
-              }
-            } catch (err) {
-              console.error('Error detecting barcode:', err);
-            }
-          }
-        }, 100);
-      }
+      await html5QrCodeRef.current.start(
+        { facingMode: 'environment' },
+        config,
+        qrCodeSuccessCallback,
+        qrCodeErrorCallback
+      );
     } catch (err) {
       console.error('Error accessing camera:', err);
-      setError('Unable to access camera. Please ensure you have granted camera permissions.');
+      setError('Unable to access camera. Please ensure you have granted camera permissions and that your device supports camera access.');
       setIsScanning(false);
     }
   };
@@ -142,16 +123,8 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="relative bg-black rounded-lg overflow-hidden aspect-video">
-                <video
-                  ref={videoRef}
-                  className="w-full h-full object-cover"
-                  playsInline
-                  muted
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="border-4 border-white rounded-lg w-64 h-40 opacity-50"></div>
-                </div>
+              <div className="relative bg-black rounded-lg overflow-hidden">
+                <div id={scannerIdRef.current} className="w-full" />
               </div>
 
               <div className="flex items-center justify-center space-x-2 text-slate-600">
@@ -160,8 +133,8 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
               </div>
 
               <button
-                onClick={() => {
-                  stopScanning();
+                onClick={async () => {
+                  await stopScanning();
                   setIsScanning(false);
                 }}
                 className="w-full py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition"
