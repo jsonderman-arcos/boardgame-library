@@ -99,9 +99,19 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
       html5QrCodeRef.current = new Html5Qrcode(scannerId);
 
       const config = {
-        fps: 10,
-        qrbox: { width: 250, height: 150 },
-        aspectRatio: 1.777778
+        fps: 20,
+        qrbox: { width: 300, height: 100 },
+        aspectRatio: 1.777778,
+        disableFlip: true,
+        formatsToSupport: [
+          'EAN_13',
+          'EAN_8',
+          'UPC_A',
+          'UPC_E',
+          'CODE_128',
+          'CODE_39',
+          'ITF'
+        ]
       };
 
       const qrCodeSuccessCallback = (decodedText: string) => {
@@ -140,9 +150,24 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
       } else if (errorName === 'OverconstrainedError' || errorMessage.includes('Overconstrained')) {
         setError('Unable to access the rear camera. Trying with available camera...');
         try {
+          const fallbackConfig = {
+            fps: 20,
+            qrbox: { width: 300, height: 100 },
+            aspectRatio: 1.777778,
+            disableFlip: true,
+            formatsToSupport: [
+              'EAN_13',
+              'EAN_8',
+              'UPC_A',
+              'UPC_E',
+              'CODE_128',
+              'CODE_39',
+              'ITF'
+            ]
+          };
           await html5QrCodeRef.current?.start(
             { facingMode: 'user' },
-            config,
+            fallbackConfig,
             (decodedText: string) => {
               console.log('Barcode detected:', decodedText);
               stopScanning();
@@ -231,6 +256,16 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
             <div className="space-y-4">
               <div className="relative bg-black rounded-lg overflow-hidden">
                 <div id={scannerIdRef.current} className="w-full" />
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-blue-800 font-semibold mb-1">Scanning Tips:</p>
+                <ul className="text-xs text-blue-700 space-y-1">
+                  <li>• Hold the barcode 6-8 inches from the camera</li>
+                  <li>• Keep the barcode centered and horizontal</li>
+                  <li>• Ensure good lighting on the barcode</li>
+                  <li>• Hold steady for 1-2 seconds</li>
+                </ul>
               </div>
 
               <div className="flex items-center justify-center space-x-2 text-slate-600">
