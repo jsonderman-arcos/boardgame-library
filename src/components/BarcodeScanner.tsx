@@ -100,19 +100,22 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
       );
     } catch (err: any) {
       console.error('Error accessing camera:', err);
+      console.error('Error type:', err?.name);
+      console.error('Error message:', err?.message);
       setIsScanning(false);
 
       const errorMessage = err?.message || err?.toString() || '';
+      const errorName = err?.name || '';
 
-      if (errorMessage.includes('Permission denied') || errorMessage.includes('NotAllowedError')) {
+      if (errorName === 'NotAllowedError' || errorMessage.includes('Permission denied') || errorMessage.includes('permission denied')) {
         setError('Camera access was denied. Please click "Allow" when your browser asks for camera permission, or enable it in your browser settings.');
-      } else if (errorMessage.includes('NotFoundError') || errorMessage.includes('not find')) {
+      } else if (errorName === 'NotFoundError' || errorMessage.includes('not find') || errorMessage.includes('Requested device not found')) {
         setError('No camera found on this device. Please ensure your device has a camera or try a different device.');
-      } else if (errorMessage.includes('NotReadableError') || errorMessage.includes('Could not start video source')) {
+      } else if (errorName === 'NotReadableError' || errorMessage.includes('Could not start video source') || errorMessage.includes('already in use')) {
         setError('Camera is already in use by another application. Please close other apps using the camera and try again.');
-      } else if (errorMessage.includes('NotSupportedError') || errorMessage.includes('secure')) {
+      } else if (errorName === 'NotSupportedError' || errorMessage.includes('secure') || errorMessage.includes('Only secure origins')) {
         setError('Camera access requires HTTPS. Please access this site using https:// or localhost.');
-      } else if (errorMessage.includes('OverconstrainedError')) {
+      } else if (errorName === 'OverconstrainedError' || errorMessage.includes('Overconstrained')) {
         setError('Unable to access the rear camera. Trying with available camera...');
         try {
           await html5QrCodeRef.current?.start(
@@ -127,11 +130,14 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
           );
           setError('');
           setIsScanning(true);
-        } catch {
+        } catch (retryErr) {
+          console.error('Retry with front camera also failed:', retryErr);
           setError('Unable to access any camera on this device.');
         }
+      } else if (errorMessage.includes('Camera access is only supported in secure contexts')) {
+        setError('Camera access requires HTTPS. Please access this site using https:// or localhost.');
       } else {
-        setError('Unable to access camera. Please ensure you have granted camera permissions and that your device supports camera access.');
+        setError(`Unable to access camera: ${errorMessage || 'Unknown error'}. Check browser console for details.`);
       }
     }
   };
