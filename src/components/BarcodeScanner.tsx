@@ -11,16 +11,51 @@ interface BarcodeScannerProps {
 export default function BarcodeScanner({ onScan, onClose, onManualEntry }: BarcodeScannerProps) {
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState<string>('');
+  const [permissionStatus, setPermissionStatus] = useState<'prompt' | 'granted' | 'denied' | 'unsupported'>('prompt');
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   const scannerIdRef = useRef<string>('barcode-scanner-' + Math.random().toString(36).substring(7));
 
   useEffect(() => {
+    checkCameraPermission();
     return () => {
       if (html5QrCodeRef.current) {
         html5QrCodeRef.current.stop().catch(console.error);
       }
     };
   }, []);
+
+  const checkCameraPermission = async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setPermissionStatus('unsupported');
+      setError('Camera access is not supported in this browser. Please use a modern browser like Chrome, Firefox, or Safari.');
+      return;
+    }
+
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      setError('Camera access requires HTTPS. Please access this site using https:// or use localhost for development.');
+      return;
+    }
+
+    try {
+      const result = await navigator.permissions.query({ name: 'camera' as PermissionName });
+      setPermissionStatus(result.state as 'prompt' | 'granted' | 'denied');
+
+      if (result.state === 'denied') {
+        setError('Camera access has been blocked. Please enable camera permissions in your browser settings and refresh the page.');
+      }
+
+      result.addEventListener('change', () => {
+        setPermissionStatus(result.state as 'prompt' | 'granted' | 'denied');
+        if (result.state === 'denied') {
+          setError('Camera access has been blocked. Please enable camera permissions in your browser settings and refresh the page.');
+        } else {
+          setError('');
+        }
+      });
+    } catch (err) {
+      console.log('Permission API not supported, will prompt when camera is accessed');
+    }
+  };
 
   const stopScanning = async () => {
     if (html5QrCodeRef.current) {
@@ -63,10 +98,41 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
         qrCodeSuccessCallback,
         qrCodeErrorCallback
       );
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error accessing camera:', err);
-      setError('Unable to access camera. Please ensure you have granted camera permissions and that your device supports camera access.');
       setIsScanning(false);
+
+      const errorMessage = err?.message || err?.toString() || '';
+
+      if (errorMessage.includes('Permission denied') || errorMessage.includes('NotAllowedError')) {
+        setError('Camera access was denied. Please click "Allow" when your browser asks for camera permission, or enable it in your browser settings.');
+      } else if (errorMessage.includes('NotFoundError') || errorMessage.includes('not find')) {
+        setError('No camera found on this device. Please ensure your device has a camera or try a different device.');
+      } else if (errorMessage.includes('NotReadableError') || errorMessage.includes('Could not start video source')) {
+        setError('Camera is already in use by another application. Please close other apps using the camera and try again.');
+      } else if (errorMessage.includes('NotSupportedError') || errorMessage.includes('secure')) {
+        setError('Camera access requires HTTPS. Please access this site using https:// or localhost.');
+      } else if (errorMessage.includes('OverconstrainedError')) {
+        setError('Unable to access the rear camera. Trying with available camera...');
+        try {
+          await html5QrCodeRef.current?.start(
+            { facingMode: 'user' },
+            config,
+            (decodedText: string) => {
+              console.log('Barcode detected:', decodedText);
+              stopScanning();
+              onScan(decodedText);
+            },
+            () => {}
+          );
+          setError('');
+          setIsScanning(true);
+        } catch {
+          setError('Unable to access any camera on this device.');
+        }
+      } else {
+        setError('Unable to access camera. Please ensure you have granted camera permissions and that your device supports camera access.');
+      }
     }
   };
 
@@ -100,13 +166,24 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
 
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <p className="text-sm text-red-700">{error}</p>
+                  <p className="text-sm text-red-700 leading-relaxed">{error}</p>
+                  {permissionStatus === 'denied' && (
+                    <div className="mt-3 text-xs text-red-600 space-y-1">
+                      <p className="font-semibold">How to enable camera access:</p>
+                      <ul className="list-disc list-inside space-y-1 ml-2">
+                        <li>Chrome: Click the camera icon in the address bar</li>
+                        <li>Firefox: Click the camera icon in the address bar</li>
+                        <li>Safari: Go to Settings → Safari → Camera</li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
               )}
 
               <button
                 onClick={startScanning}
-                className="w-full flex items-center justify-center space-x-2 bg-slate-900 text-white py-4 rounded-lg font-semibold hover:bg-slate-800 transition"
+                disabled={permissionStatus === 'unsupported'}
+                className="w-full flex items-center justify-center space-x-2 bg-slate-900 text-white py-4 rounded-lg font-semibold hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Camera className="w-5 h-5" />
                 <span>Start Scanning</span>
