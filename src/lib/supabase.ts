@@ -54,6 +54,12 @@ export interface Profile {
     theme: 'light' | 'dark';
     notifications_enabled: boolean;
     default_view: 'grid' | 'list';
+    players?: string[];
+    game_timer?: {
+      started_at: string | null;
+      stopped_at: string | null;
+      is_running: boolean;
+    };
   };
   total_games: number;
   favorite_count: number;

@@ -13,4 +13,201 @@
       transform: scale(1);
     }
   }
+
+  /* Card shuffle animations for First Player Chooser */
+
+  /* Base card setup with 3D perspective */
+  .player-card {
+    position: relative;
+    width: 128px;
+    height: 128px;
+    transform-style: preserve-3d;
+    transition: none;
+  }
+
+  /* Keep card face-down between animation phases */
+  .card-face-down {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform-style: preserve-3d;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+    z-index: 2;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    z-index: 1;
+  }
+
+  /* Animation 1: Flip cards face-down */
+  @keyframes flipDown {
+    from {
+      transform: rotateY(0deg);
+    }
+    to {
+      transform: rotateY(180deg);
+    }
+  }
+
+  .card-flip-down {
+    animation: flipDown 0.8s ease-in-out forwards;
+    animation-fill-mode: both;
+  }
+
+  /* Animation 2: Smooth shuffle animation */
+  @keyframes shuffle {
+    0%, 100% {
+      transform: rotateY(180deg) translate(0, 0) scale(1);
+    }
+    12.5% {
+      transform: rotateY(180deg) translate(var(--shuffle-x), var(--shuffle-y)) scale(1.05);
+    }
+    25% {
+      transform: rotateY(180deg) translate(calc(var(--shuffle-x2) * 0.8), calc(var(--shuffle-y2) * 0.8)) scale(0.95);
+    }
+    37.5% {
+      transform: rotateY(180deg) translate(calc(var(--shuffle-x) * -1.2), calc(var(--shuffle-y) * 1.1)) scale(1.08);
+    }
+    50% {
+      transform: rotateY(180deg) translate(var(--shuffle-x2), var(--shuffle-y2)) scale(0.92);
+    }
+    62.5% {
+      transform: rotateY(180deg) translate(calc(var(--shuffle-x) * 0.9), calc(var(--shuffle-y) * -0.9)) scale(1.03);
+    }
+    75% {
+      transform: rotateY(180deg) translate(calc(var(--shuffle-x2) * -0.7), calc(var(--shuffle-y2) * 0.7)) scale(0.98);
+    }
+    87.5% {
+      transform: rotateY(180deg) translate(calc(var(--shuffle-x) * 0.4), calc(var(--shuffle-y) * -0.4)) scale(1.01);
+    }
+  }
+
+  .card-shuffle {
+    animation: shuffle 2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+    animation-fill-mode: both;
+  }
+
+  /* Animation 3: Highlight chosen card */
+  @keyframes chosen {
+    from {
+      transform: rotateY(180deg) scale(1);
+    }
+    to {
+      transform: rotateY(180deg) scale(1.15);
+      filter: drop-shadow(0 0 20px rgba(147, 51, 234, 0.8));
+    }
+  }
+
+  .card-chosen {
+    animation: chosen 0.5s ease-out forwards;
+    animation-fill-mode: both;
+    z-index: 10;
+  }
+
+  .card-not-chosen {
+    transform: rotateY(180deg);
+    opacity: 0.6;
+  }
+
+  /* Animation 4: Push away non-winner cards */
+  @keyframes pushAway {
+    from {
+      transform: rotateY(180deg) translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: rotateY(180deg) translate(var(--push-x), var(--push-y)) scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  .card-push-away {
+    animation: pushAway 0.8s ease-in forwards;
+    animation-fill-mode: both;
+  }
+
+  .card-winner-stay {
+    transform: rotateY(180deg) scale(1.15);
+    filter: drop-shadow(0 0 20px rgba(147, 51, 234, 0.8));
+  }
+
+  .card-stay-away {
+    transform: rotateY(180deg) translate(var(--push-x), var(--push-y)) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  /* Force non-winner cards to stay face-down in revealing phase */
+  .player-card.card-stay-away {
+    transform: rotateY(180deg) translate(var(--push-x), var(--push-y)) scale(0.5);
+  }
+
+  /* Animation 5: Flip winner card face-up */
+  @keyframes flipUp {
+    from {
+      transform: rotateY(180deg) scale(1.15);
+    }
+    to {
+      transform: rotateY(360deg) scale(1.2);
+      filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.9));
+    }
+  }
+
+  .card-flip-up {
+    animation: flipUp 0.6s ease-out forwards;
+    animation-fill-mode: both;
+  }
+
+  /* Winner card glow animation */
+  @keyframes winnerGlow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(147, 51, 234, 0.5),
+                  0 0 40px rgba(236, 72, 153, 0.3);
+      border-color: rgba(147, 51, 234, 0.6);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(147, 51, 234, 0.8),
+                  0 0 80px rgba(236, 72, 153, 0.6);
+      border-color: rgba(236, 72, 153, 0.8);
+    }
+  }
+
+  @keyframes winnerPulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .winner-card {
+    animation: winnerGlow 2s ease-in-out infinite, winnerPulse 1s ease-in-out infinite;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .card-flip-down,
+    .card-shuffle,
+    .card-chosen,
+    .card-push-away,
+    .card-flip-up {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .winner-card {
+      animation: fadeIn 0.5s ease-in;
+    }
+  }
 }
