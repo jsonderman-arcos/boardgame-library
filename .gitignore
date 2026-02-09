@@ -24,3 +24,6 @@ dist-ssr
 .env.*
 supabase/functions/.env
 .tests
+
+# One-off maintenance scripts
+scripts/
