@@ -10,20 +10,15 @@ Netlify's security scanner detects `VITE_SUPABASE_ANON_KEY` in the built `dist/`
 
 ## Solution
 
-### 1. Configuration Files Created
+### 1. Configuration File
 
-We've created two configuration files:
+We've created `netlify.toml` with the following:
 
-#### `netlify.toml`
 - Configures build command and publish directory
 - Sets up SPA routing (redirects all routes to `index.html`)
 - Adds security headers
 - Specifies Node.js version
-
-#### `.netlify/audit-ignore.json`
-- Explicitly tells Netlify to ignore Supabase public keys
-- Whitelists the `VITE_SUPABASE_ANON_KEY` pattern
-- Includes justification for why these are safe to expose
+- **Configures `SECRETS_SCAN_OMIT_KEYS`** to exclude VITE_ prefixed variables from secret scanning
 
 ### 2. Netlify Dashboard Configuration
 
@@ -34,9 +29,11 @@ In your Netlify dashboard:
 1. Go to **Site settings** → **Environment variables**
 2. Add the following variables:
    ```
-   VITE_SUPABASE_URL = https://oorilcytrytxhffindgy.supabase.co
-   VITE_SUPABASE_ANON_KEY = your_anon_key_here
+   VITE_SUPABASE_URL = <your-supabase-url>
+   VITE_SUPABASE_ANON_KEY = <your-anon-key>
    ```
+
+   Get these values from your Supabase project dashboard.
 
 #### Step 2: Disable Sensitive Variable Scanning (if needed)
 
@@ -48,27 +45,41 @@ If the audit-ignore file doesn't work:
    - Select **"Don't block builds"** for this project
    - Or contact Netlify support to whitelist your Supabase anon key
 
-### 3. Alternative Solutions
+### 3. How It Works
 
-#### Option A: Use Netlify's Secret Detection Override
+The key configuration in `netlify.toml` is:
 
-If you have access to Netlify's secret detection settings:
+```toml
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY"
+```
 
-1. Navigate to **Site settings** → **Build & deploy** → **Post processing**
-2. Find **Secret detection**
-3. Add an exception for Supabase anon keys
+This tells Netlify to:
+- Skip scanning for `VITE_SUPABASE_URL` in build output
+- Skip scanning for `VITE_SUPABASE_ANON_KEY` in build output
+- Allow these variables to be embedded in the client bundle
 
-#### Option B: Contact Netlify Support
+### 4. Alternative Solutions (If Needed)
 
-If automated solutions don't work:
+#### Option A: Disable Secret Scanning Entirely
 
-1. Create a support ticket explaining:
-   - Supabase anon keys are public by design
-   - They are protected by RLS policies
-   - They need to be embedded in client code
-2. Request whitelisting for your specific anon key
+If you need to disable scanning completely (not recommended):
 
-### 4. Verify the Fix
+```toml
+[build.environment]
+  SECRETS_SCAN_ENABLED = "false"
+```
+
+#### Option B: Exclude Specific Paths
+
+To exclude only the `dist/` directory from scanning:
+
+```toml
+[build.environment]
+  SECRETS_SCAN_OMIT_PATHS = "dist/"
+```
+
+### 5. Verify the Fix
 
 After deploying:
 
@@ -103,10 +114,12 @@ These secrets are set in Supabase dashboard under **Edge Functions** → **Secre
 
 ### Build still fails with secret detection
 
-1. Double-check that `.netlify/audit-ignore.json` exists
-2. Verify the pattern matches your key format
-3. Try the "Don't block builds" option in Netlify settings
-4. Contact Netlify support with details about Supabase anon keys
+1. Verify `netlify.toml` has `SECRETS_SCAN_OMIT_KEYS` configured
+2. Ensure the variable names in `SECRETS_SCAN_OMIT_KEYS` match exactly
+3. Check that you're not committing actual secret values in documentation files
+4. Try setting the environment variable in Netlify UI instead:
+   - Go to **Site settings** → **Build & deploy** → **Environment**
+   - Add `SECRETS_SCAN_OMIT_KEYS` = `VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY`
 
 ### Environment variables not working
 

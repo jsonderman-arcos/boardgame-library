@@ -24,4 +24,3 @@ dist-ssr
 .env.*
 supabase/functions/.env
 .tests
-.netlify/audit-ignore.json
