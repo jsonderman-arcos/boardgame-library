@@ -50,7 +50,7 @@ The barcode lookup system now uses a secure Supabase Edge Function that tries Ga
 supabase link --project-ref your-project-ref
 
 # Set your BarcodeLookup API token as a secret
-supabase secrets set BARCODELOOKUP_API_KEY=p5ec4bujdumc41coc93rj0dxcdviif
+supabase secrets set BARCODELOOKUP_API_KEY=your-barcodelookup-api-key-here
 
 # (Optional) Set your UPCItemDB key for higher limits
 # NOTE: UPCITEMDB secrets are NOT required - the function automatically uses
@@ -94,7 +94,7 @@ const gameData = await lookupBarcodeWithBgg('123456789012');
 - **Upgrade**: Get production key at https://gameupc.com
 
 ### BarcodeLookup
-- **Token**: `p5ec4bujdumc41coc93rj0dxcdviif`
+- **Token**: Get your API key at https://www.barcodelookup.com
 - **API Docs**: https://www.barcodelookup.com/api
 - **Rate Limit**: Check your plan limits
 - **Upgrade**: Visit https://www.barcodelookup.com/pricing
@@ -159,7 +159,7 @@ lookupBarcodeWithBgg('644216627775')
 
 ### "BARCODELOOKUP_API_KEY not configured"
 - BarcodeLookup will be skipped and the function will fall back to UPCItemDB.
-- To enable BarcodeLookup, run: `supabase secrets set BARCODELOOKUP_API_KEY=p5ec4bujdumc41coc93rj0dxcdviif`
+- To enable BarcodeLookup, run: `supabase secrets set BARCODELOOKUP_API_KEY=your-barcodelookup-api-key-here`
 - Redeploy: `supabase functions deploy barcode-lookup`
 
 ### GameUPC vs BarcodeLookup vs UPCItemDB

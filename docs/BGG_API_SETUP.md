@@ -2,7 +2,7 @@
 
 ## Overview
 
-Your BGG API token (`e29ccf88-aa5b-45b0-9f87-eb10db7b5302`) is now stored securely on the server-side using Supabase Edge Functions. This prevents the token from being exposed in client-side code while still allowing all users to perform BGG lookups.
+Your BGG API token is now stored securely on the server-side using Supabase Edge Functions. This prevents the token from being exposed in client-side code while still allowing all users to perform BGG lookups.
 
 ## Architecture
 
@@ -28,7 +28,7 @@ Your BGG API token (`e29ccf88-aa5b-45b0-9f87-eb10db7b5302`) is now stored secure
 supabase link --project-ref your-project-ref
 
 # Set your BGG API token as a secret
-supabase secrets set BGG_API_TOKEN=e29ccf88-aa5b-45b0-9f87-eb10db7b5302
+supabase secrets set BGG_API_TOKEN=your-bgg-api-token-here
 
 # Deploy the function
 supabase functions deploy bgg-lookup
@@ -137,7 +137,7 @@ lookupBggGame(174430).then(console.log).catch(console.error);
 ## Troubleshooting
 
 ### "BGG_API_TOKEN not configured"
-- Run: `supabase secrets set BGG_API_TOKEN=e29ccf88-aa5b-45b0-9f87-eb10db7b5302`
+- Run: `supabase secrets set BGG_API_TOKEN=your-bgg-api-token-here`
 - Redeploy: `supabase functions deploy bgg-lookup`
 
 ### "CORS error"

@@ -1,12 +1,17 @@
+// @ts-ignore - This is a Deno file for Supabase Edge Functions
 // Supabase Edge Function to securely lookup barcode data
 // This keeps API tokens server-side only and provides fallback logic
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
 
+// @ts-ignore - Deno global
 const GAMEUPC_API_KEY = Deno.env.get('GAMEUPC_API_KEY');
+// @ts-ignore - Deno global
 const BARCODELOOKUP_API_KEY = Deno.env.get('BARCODELOOKUP_API_KEY');
 // UPCITEMDB is optional - uses free trial endpoint if not set
+// @ts-ignore - Deno global
 const UPCITEMDB_USER_KEY = Deno.env.get('UPCITEMDB_USER_KEY');
+// @ts-ignore - Deno global
 const UPCITEMDB_KEY_TYPE = Deno.env.get('UPCITEMDB_KEY_TYPE') || '3scale';
 
 interface BarcodeLookupRequest {
@@ -38,7 +43,7 @@ interface UpcItemDbResponse {
 
 const isNonEmptyString = (value?: string) => typeof value === 'string' && value.trim().length > 0;
 
-serve(async (req) => {
+serve(async (req: Request) => {
   // Handle CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, {
@@ -58,6 +63,7 @@ serve(async (req) => {
       );
     }
 
+    // @ts-ignore - request.json() returns unknown
     const body: BarcodeLookupRequest = await req.json();
     const { barcode } = body;
 

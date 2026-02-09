@@ -1,7 +1,13 @@
 // Test script to fetch full BGG response for Viscounts of the West Kingdom
 
-const BGG_API_TOKEN = 'e29ccf88-aa5b-45b0-9f87-eb10db7b5302';
+const BGG_API_TOKEN = process.env.BGG_API_TOKEN;
 const BGG_API_BASE_URL = 'https://boardgamegeek.com/xmlapi2';
+
+if (!BGG_API_TOKEN) {
+  console.error('❌ BGG_API_TOKEN environment variable is required');
+  console.error('Set it in your .env file or export BGG_API_TOKEN=your-token-here');
+  process.exit(1);
+}
 
 async function searchBgg(gameName: string) {
   const url = `${BGG_API_BASE_URL}/search?query=${encodeURIComponent(gameName)}&type=boardgame`;

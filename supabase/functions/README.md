@@ -32,10 +32,10 @@ supabase link --project-ref your-project-ref
 
 ```bash
 # BGG API token
-supabase secrets set BGG_API_TOKEN=e29ccf88-aa5b-45b0-9f87-eb10db7b5302
+supabase secrets set BGG_API_TOKEN=your-bgg-api-token-here
 
 # BarcodeLookup API token
-supabase secrets set BARCODELOOKUP_API_KEY=p5ec4bujdumc41coc93rj0dxcdviif
+supabase secrets set BARCODELOOKUP_API_KEY=your-barcodelookup-api-key-here
 
 # (Optional) UPCItemDB API token for higher limits
 supabase secrets set UPCITEMDB_USER_KEY=your-upcitemdb-key
@@ -67,8 +67,8 @@ cp .env.example .env
 #### 2. Edit `.env` and add your tokens
 
 ```
-BGG_API_TOKEN=e29ccf88-aa5b-45b0-9f87-eb10db7b5302
-BARCODELOOKUP_API_KEY=p5ec4bujdumc41coc93rj0dxcdviif
+BGG_API_TOKEN=your-bgg-api-token-here
+BARCODELOOKUP_API_KEY=your-barcodelookup-api-key-here
 UPCITEMDB_USER_KEY=your-upcitemdb-key
 UPCITEMDB_KEY_TYPE=3scale
 ```
