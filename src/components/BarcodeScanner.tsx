@@ -14,6 +14,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
   const [permissionStatus, setPermissionStatus] = useState<'prompt' | 'granted' | 'denied' | 'unsupported'>('prompt');
   const html5QrCodeRef = useRef<Html5Qrcode | null>(null);
   const scannerIdRef = useRef<string>('barcode-scanner-' + Math.random().toString(36).substring(7));
+  const shouldInitScanner = useRef(false);
 
   useEffect(() => {
     checkCameraPermission();
@@ -23,6 +24,14 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
       }
     };
   }, []);
+
+  // Initialize scanner after DOM is ready
+  useEffect(() => {
+    if (isScanning && shouldInitScanner.current) {
+      shouldInitScanner.current = false;
+      initializeScanner();
+    }
+  }, [isScanning]);
 
   const checkCameraPermission = async () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -68,12 +77,25 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
     }
   };
 
-  const startScanning = async () => {
+  const startScanning = () => {
     setError('');
+    shouldInitScanner.current = true;
     setIsScanning(true);
+  };
 
+  const initializeScanner = async () => {
     try {
       const scannerId = scannerIdRef.current;
+
+      // Wait a tick to ensure DOM is ready
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Check if element exists
+      const element = document.getElementById(scannerId);
+      if (!element) {
+        throw new Error(`Scanner element with id ${scannerId} not found in DOM`);
+      }
+
       html5QrCodeRef.current = new Html5Qrcode(scannerId);
 
       const config = {
@@ -129,13 +151,14 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
             () => {}
           );
           setError('');
-          setIsScanning(true);
         } catch (retryErr) {
           console.error('Retry with front camera also failed:', retryErr);
           setError('Unable to access any camera on this device.');
         }
       } else if (errorMessage.includes('Camera access is only supported in secure contexts')) {
         setError('Camera access requires HTTPS. Please access this site using https:// or localhost.');
+      } else if (errorMessage.includes('not found in DOM')) {
+        setError('Scanner initialization failed. Please try again.');
       } else {
         setError(`Unable to access camera: ${errorMessage || 'Unknown error'}. Check browser console for details.`);
       }
