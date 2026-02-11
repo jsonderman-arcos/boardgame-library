@@ -62,6 +62,18 @@ export async function getGameByBarcode(barcode: string) {
   return data as Game | null;
 }
 
+export async function getGameByBggId(bggId: number) {
+  const { data, error } = await supabase
+    .from('shared_games')
+    .select('*')
+    .eq('bgg_id', bggId)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as Game | null;
+}
+
 export async function createSharedGame(game: Omit<Game, 'id' | 'created_at' | 'updated_at'>) {
   const { data, error } = await supabase
     .from('shared_games')

@@ -5,6 +5,7 @@ import {
   getUserLibrary,
   getLibraryEntry,
   getGameByBarcode,
+  getGameByBggId,
   createSharedGame,
   addGameToLibrary,
   updateLibraryEntry,
@@ -232,21 +233,35 @@ export default function Library() {
         try {
           // Use new secure BGG lookup that fetches full game data
           const gameData = await lookupBarcodeWithBgg(barcode);
-          game = await createSharedGame({
-            barcode,
-            name: gameData.name || 'Unknown Game',
-            bgg_id: gameData.bgg_id,
-            publisher: gameData.publisher,
-            year: gameData.year?.toString(),
-            cover_image: gameData.cover_image,
-            min_players: gameData.min_players,
-            max_players: gameData.max_players,
-            playtime_minutes: gameData.playtime_minutes,
-            game_type: gameData.game_type,
-            game_category: gameData.game_category,
-            game_mechanic: gameData.game_mechanic,
-            game_family: gameData.game_family,
-          });
+
+          // Check if a game with this BGG ID already exists in shared_games
+          // This prevents duplicate entries when the same game has different barcodes
+          if (gameData.bgg_id) {
+            const existingGame = await getGameByBggId(gameData.bgg_id);
+            if (existingGame) {
+              game = existingGame;
+              console.log(`Game already exists with BGG ID ${gameData.bgg_id}, using existing entry`);
+            }
+          }
+
+          // If no existing game found, create a new one
+          if (!game) {
+            game = await createSharedGame({
+              barcode,
+              name: gameData.name || 'Unknown Game',
+              bgg_id: gameData.bgg_id,
+              publisher: gameData.publisher,
+              year: gameData.year?.toString(),
+              cover_image: gameData.cover_image,
+              min_players: gameData.min_players,
+              max_players: gameData.max_players,
+              playtime_minutes: gameData.playtime_minutes,
+              game_type: gameData.game_type,
+              game_category: gameData.game_category,
+              game_mechanic: gameData.game_mechanic,
+              game_family: gameData.game_family,
+            });
+          }
 
           // If the barcode was found via a backup API (not GameUPC), submit to GameUPC
           if (gameData.source !== 'gameupc' && gameData.bgg_id) {
@@ -300,21 +315,39 @@ export default function Library() {
     if (!user) return;
 
     try {
-      // Create game with all BGG data from manual search
-      const game = await createSharedGame({
-        barcode: gameData.barcode,
-        bgg_id: gameData.bgg_id,
-        name: gameData.name,
-        publisher: gameData.publisher,
-        year: gameData.year?.toString(),
-        cover_image: gameData.cover_image,
-        min_players: gameData.min_players,
-        max_players: gameData.max_players,
-        playtime_minutes: gameData.playtime_minutes,
-        game_type: gameData.game_type,
-        game_category: gameData.game_category,
-        game_mechanic: gameData.game_mechanic,
-      });
+      // Check if a game with this BGG ID already exists in shared_games
+      // This prevents duplicate entries when the same game has different barcodes
+      let game = null;
+      if (gameData.bgg_id) {
+        game = await getGameByBggId(gameData.bgg_id);
+        if (game) {
+          console.log(`Game already exists with BGG ID ${gameData.bgg_id}, using existing entry`);
+        }
+      }
+
+      // If no existing game found, create a new one
+      if (!game) {
+        // Generate a placeholder barcode if none was provided (manual entry without scanning)
+        // Format: MANUAL-{BGG_ID}-{TIMESTAMP} or MANUAL-UNKNOWN-{TIMESTAMP}
+        const barcode = gameData.barcode ||
+          `MANUAL-${gameData.bgg_id || 'UNKNOWN'}-${Date.now()}`;
+
+        // Create game with all BGG data from manual search
+        game = await createSharedGame({
+          barcode,
+          bgg_id: gameData.bgg_id,
+          name: gameData.name,
+          publisher: gameData.publisher,
+          year: gameData.year?.toString(),
+          cover_image: gameData.cover_image,
+          min_players: gameData.min_players,
+          max_players: gameData.max_players,
+          playtime_minutes: gameData.playtime_minutes,
+          game_type: gameData.game_type,
+          game_category: gameData.game_category,
+          game_mechanic: gameData.game_mechanic,
+        });
+      }
 
       // If we have a BGG ID, submit the barcode mapping to GameUPC
       // This helps improve the GameUPC database for future users
