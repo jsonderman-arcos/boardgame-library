@@ -57,20 +57,20 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900"></div>
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-terracotta-500"></div>
       </div>
     );
   }
 
   if (!stats) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-cream flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-600">Failed to load dashboard</p>
+          <p className="font-mono text-sm text-slate-600">Failed to load statistics</p>
           <button
             onClick={handleRefresh}
-            className="mt-4 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition"
+            className="mt-4 px-4 py-2 bg-slate-900 text-cream font-mono text-sm hover:bg-slate-800 transition"
           >
             Retry
           </button>
@@ -80,33 +80,30 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-gradient-to-br from-purple-600 to-pink-600 rounded-lg">
-              <BarChart3 className="w-6 h-6 text-white" />
-            </div>
-            <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
+    <div className="min-h-screen bg-cream">
+      <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-12">
+        <div className="flex items-center justify-between mb-8 pb-6 border-b thin-rule rule-line">
+          <div className="flex items-center gap-4">
+            <BarChart3 className="w-7 h-7 text-terracotta-600" strokeWidth={1.5} />
+            <div className="border-l thin-rule rule-line h-10" />
+            <h1 className="text-3xl font-display font-light text-slate-900 tracking-wide">Analytics</h1>
           </div>
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className="flex items-center space-x-2 px-4 py-2 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2 border thin-rule rule-line hover:bg-slate-50 transition disabled:opacity-50 font-mono text-xs uppercase tracking-wider"
           >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            <span className="text-sm font-medium">Refresh</span>
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={1.5} />
+            <span>Refresh</span>
           </button>
         </div>
 
         {/* Quick Stats */}
         <QuickStats stats={stats} />
 
-        {/* Quick Actions - Game Nite Tools Shortcuts */}
         {stats.totalGames > 0 && (
-          <div className="mt-6">
-            <h2 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h2>
+          <div className="mt-8">
+            <h2 className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">Quick Actions</h2>
             <QuickActions
               onNavigateToGameNiteTools={(tool) => {
                 if (onNavigate) {
@@ -119,9 +116,8 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           </div>
         )}
 
-        {/* Most Played Games */}
         {stats.totalGames > 0 && (
-          <div className="mt-6">
+          <div className="mt-12">
             <MostPlayedGames
               games={mostPlayed}
               maxPlayCount={mostPlayed[0]?.playCount || 0}
@@ -129,29 +125,24 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
           </div>
         )}
 
-        {/* Recently Added Games */}
         {stats.totalGames > 0 && recentlyAdded.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-12">
             <RecentlyAddedGames games={recentlyAdded} />
           </div>
         )}
 
-        {/* Play Activity Chart */}
         {stats.totalGames > 0 && playActivity.length > 0 && (
-          <div className="mt-6">
+          <div className="mt-12">
             <PlayActivityChart activity={playActivity} />
           </div>
         )}
 
-        {/* Empty State */}
         {stats.totalGames === 0 && (
-          <div className="mt-8 bg-white rounded-lg shadow-sm border border-slate-200 p-12 text-center">
+          <div className="mt-12 bg-cream linen-texture border thin-rule rule-line p-16 text-center">
             <div className="max-w-md mx-auto">
-              <div className="p-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-10 h-10 text-purple-600" />
-              </div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Start Your Collection</h2>
-              <p className="text-slate-600 mb-6">
+              <BookOpen className="w-16 h-16 text-terracotta-400 mx-auto mb-6" strokeWidth={1} />
+              <h2 className="text-2xl font-display font-light text-slate-900 mb-3">Begin Your Collection</h2>
+              <p className="text-sm font-body text-slate-600 mb-8 leading-relaxed">
                 Add games to your library to see statistics about your collection and play history.
               </p>
               <button
@@ -162,9 +153,9 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                     toast.info('Switch to the Library tab to add games');
                   }
                 }}
-                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-pink-700 transition"
+                className="px-6 py-3 bg-slate-900 text-cream font-mono text-sm uppercase tracking-wider hover:bg-slate-800 transition"
               >
-                Go to Library
+                Visit Library
               </button>
             </div>
           </div>

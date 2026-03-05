@@ -478,58 +478,53 @@ export default function Library() {
   }, [filterFavorites, filterForSale, filters]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-cream">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
-        <div className="mb-4 sm:mb-8 space-y-3 sm:space-y-4">
-          <div className="flex flex-col gap-2 sm:gap-4">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
+        <div className="mb-8 sm:mb-12 space-y-4 sm:space-y-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 border-b thin-rule rule-line pb-6">
             <div className="relative flex-1">
-              <Search className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search games..."
-                className="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-2 sm:py-3 text-sm sm:text-base rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                placeholder="Search catalogue..."
+                className="w-full px-4 py-3 text-sm font-mono bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition-colors"
               />
               {searchQuery && (
-                <Tooltip content="Clear search">
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
-                  >
-                    <X className="w-4 h-4 sm:w-5 sm:h-5" />
-                  </button>
-                </Tooltip>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 transition"
+                >
+                  <X className="w-4 h-4" strokeWidth={1.5} />
+                </button>
               )}
             </div>
 
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowScanner(true)}
-                className="flex items-center justify-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-slate-800 transition font-medium text-sm sm:text-base"
-              >
-                <Plus className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>Add Game</span>
-              </button>
-            </div>
+            <button
+              onClick={() => setShowScanner(true)}
+              className="flex items-center justify-center gap-2 bg-slate-900 text-cream px-6 py-3 hover:bg-slate-800 transition-colors font-mono text-sm"
+            >
+              <Plus className="w-4 h-4" strokeWidth={1.5} />
+              <span>New Entry</span>
+            </button>
           </div>
 
           <div className="space-y-2 sm:space-y-0 sm:flex sm:items-center sm:justify-between sm:flex-wrap sm:gap-3">
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm ${
+                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-mono uppercase tracking-wider ${
                   showFilters || activeFiltersCount > 0
-                    ? 'bg-slate-900 text-white'
-                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
+                    ? 'bg-slate-900 text-cream'
+                    : 'bg-cream text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <Filter className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="font-medium">Filters</span>
+                <Filter className="w-3.5 h-3.5" strokeWidth={1.5} />
+                <span>Filters</span>
                 {activeFiltersCount > 0 && (
-                  <span className="bg-white text-slate-900 text-xs px-1.5 py-0.5 rounded-full font-semibold">
+                  <span className="bg-terracotta-500 text-cream text-xs px-1.5 py-0.5">
                     {activeFiltersCount}
                   </span>
                 )}
@@ -537,14 +532,14 @@ export default function Library() {
 
               <button
                 onClick={() => setFilterFavorites(!filterFavorites)}
-                className={`flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border transition text-xs sm:text-sm ${
+                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-mono uppercase tracking-wider ${
                   filterFavorites
-                    ? 'bg-yellow-50 border-yellow-300 text-yellow-900'
-                    : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'
+                    ? 'bg-gold-500 text-slate-900'
+                    : 'bg-cream text-slate-700 hover:bg-slate-50'
                 }`}
               >
-                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4" fill={filterFavorites ? 'currentColor' : 'none'} />
-                <span className="font-medium">Favorites</span>
+                <Star className="w-3.5 h-3.5" fill={filterFavorites ? 'currentColor' : 'none'} strokeWidth={1.5} />
+                <span>Starred</span>
               </button>
 
               <button
@@ -776,7 +771,7 @@ export default function Library() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-0.5">
             {filteredLibrary.map((entry) => (
               <GameCard
                 key={entry.id}

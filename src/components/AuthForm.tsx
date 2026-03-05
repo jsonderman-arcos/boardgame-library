@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { signIn, signUp } from '../lib/auth';
-import { LogIn } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 
 interface AuthFormProps {
   onSuccess: () => void;
@@ -39,26 +39,24 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <div className="flex items-center justify-center mb-8">
-            <div className="bg-slate-900 p-3 rounded-xl">
-              <LogIn className="w-8 h-8 text-white" />
-            </div>
+        <div className="bg-cream linen-texture border thin-rule rule-line p-12">
+          <div className="flex flex-col items-center mb-12">
+            <BookOpen className="w-12 h-12 text-terracotta-600 mb-6" strokeWidth={1.5} />
+            <h1 className="text-4xl font-display font-light text-slate-900 tracking-wide text-center">
+              The Catalogue
+            </h1>
+            <div className="h-px w-16 bg-slate-300 mt-4 mb-2" />
+            <p className="text-xs font-mono text-slate-500 uppercase tracking-widest text-center">
+              {isSignUp ? 'Registration' : 'Authentication'}
+            </p>
           </div>
 
-          <h2 className="text-3xl font-bold text-center text-slate-900 mb-2">
-            Board Game Library
-          </h2>
-          <p className="text-center text-slate-600 mb-8">
-            {isSignUp ? 'Create your account' : 'Welcome back'}
-          </p>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {isSignUp && (
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-slate-700 mb-2">
+                <label htmlFor="username" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
                   Username
                 </label>
                 <input
@@ -66,7 +64,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                  className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
                   required={isSignUp}
                   autoComplete="username"
                 />
@@ -74,7 +72,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="email" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
                 Email
               </label>
               <input
@@ -82,14 +80,14 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
                 required
                 autoComplete="email"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="password" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
                 Password
               </label>
               <input
@@ -97,7 +95,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
                 required
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
@@ -105,7 +103,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-terracotta-50 border thin-rule border-terracotta-300 text-terracotta-900 px-4 py-3 text-sm font-mono">
                 {error}
               </div>
             )}
@@ -113,21 +111,21 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 text-white py-3 rounded-lg font-semibold hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-slate-900 text-cream py-3 font-mono text-sm uppercase tracking-widest hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Loading...' : isSignUp ? 'Create Account' : 'Sign In'}
+              {loading ? 'Processing...' : isSignUp ? 'Register' : 'Enter'}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
+          <div className="mt-8 pt-6 border-t thin-rule rule-line text-center">
             <button
               onClick={() => {
                 setIsSignUp(!isSignUp);
                 setError('');
               }}
-              className="text-slate-600 hover:text-slate-900 text-sm font-medium"
+              className="text-xs font-mono text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
             >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+              {isSignUp ? 'Return to Sign In' : 'Create New Account'}
             </button>
           </div>
         </div>

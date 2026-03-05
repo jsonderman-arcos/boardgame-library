@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Star, Trash2, Edit, DollarSign, Users, Clock, Plus, MoreVertical } from 'lucide-react';
+import { Star, Trash2, CreditCard as Edit, DollarSign, Users, Clock, Plus, MoreVertical, BookOpen } from 'lucide-react';
 import { UserLibraryEntry, Game } from '../lib/supabase';
-import Tooltip from './Tooltip';
 
 interface GameCardProps {
   entry: UserLibraryEntry & { game: Game };
@@ -176,8 +175,8 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition group flex flex-col">
-      <div className="aspect-square bg-slate-100 relative overflow-hidden rounded-t-lg">
+    <div className="bg-cream linen-texture border thin-rule rule-line hover:shadow-sm transition group flex flex-col overflow-hidden">
+      <div className="aspect-[3/4] bg-slate-100 relative overflow-hidden border-b thin-rule rule-line">
         {game.cover_image ? (
           <img
             src={game.cover_image}
@@ -185,72 +184,76 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-400">
-            <Library className="w-8 h-8" />
+          <div className="w-full h-full flex items-center justify-center text-slate-300">
+            <BookOpen className="w-12 h-12" strokeWidth={1} />
           </div>
         )}
 
         {entry.for_sale && (
-          <div className="absolute top-1 right-1 bg-green-500 text-white p-1 rounded shadow-lg">
-            <DollarSign className="w-3 h-3" />
+          <div className="absolute top-2 right-2 bg-forest-700 text-cream px-2 py-1">
+            <span className="text-xs font-mono uppercase tracking-wider">Sale</span>
+          </div>
+        )}
+
+        {entry.is_favorite && (
+          <div className="absolute top-2 left-2">
+            <Star className="w-4 h-4 text-gold-500" fill="currentColor" strokeWidth={0} />
           </div>
         )}
       </div>
 
-      <div className="p-2 flex flex-col flex-1">
-        <div className="flex items-start gap-1 mb-0.5">
-          <h3 className="text-xs font-semibold text-slate-900 line-clamp-2 leading-tight flex-1">{game.name}</h3>
-          {game.is_expansion && (
-            <span className="flex-shrink-0 px-1 py-0.5 bg-blue-100 text-blue-800 text-[10px] font-medium rounded">
-              EXP
-            </span>
+      <div className="p-3 flex flex-col flex-1 relative">
+        <h3 className="text-sm font-display font-medium text-slate-900 line-clamp-2 leading-tight mb-2">{game.name}</h3>
+
+        <div className="space-y-1 mb-3">
+          {game.year && (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Year</span>
+              <span className="text-xs font-mono text-slate-700">{game.year}</span>
+            </div>
+          )}
+          {(game.min_players || game.max_players) && (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Players</span>
+              <span className="text-xs font-mono text-slate-700">
+                {game.min_players === game.max_players
+                  ? game.min_players
+                  : `${game.min_players || '?'}–${game.max_players || '?'}`}
+              </span>
+            </div>
+          )}
+          {game.playtime_minutes && (
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Time</span>
+              <span className="text-xs font-mono text-slate-700">{game.playtime_minutes} min</span>
+            </div>
           )}
         </div>
 
-        {(game.min_players || game.max_players) && (
-          <div className="flex items-center gap-1 text-xs text-slate-600 mb-1">
-            <Users className="w-3 h-3" />
-            <span>
-              {game.min_players === game.max_players
-                ? `${game.min_players} player${game.min_players > 1 ? 's' : ''}`
-                : `${game.min_players || '?'}-${game.max_players || '?'} players`}
-            </span>
-          </div>
-        )}
-
-        {game.playtime_minutes && (
-          <div className="flex items-center gap-1 text-[10px] text-slate-500 mb-1">
-            <Clock className="w-3 h-3" />
-            <span>{game.playtime_minutes}m</span>
-          </div>
-        )}
-
-        <div className="flex items-center justify-end space-x-1 mt-auto pt-2">
+        <div className="flex items-center justify-between mt-auto pt-2 border-t thin-rule rule-line">
           <div className="relative">
-            <Tooltip content="More options">
-              <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="flex items-center justify-center px-2 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition"
-              >
-                <MoreVertical className="w-3.5 h-3.5" />
-              </button>
-            </Tooltip>
+            <button
+              onClick={() => setShowMenu(!showMenu)}
+              className="p-1.5 hover:bg-slate-100 transition-colors"
+            >
+              <MoreVertical className="w-4 h-4 text-slate-600" strokeWidth={1.5} />
+            </button>
             {showMenu && (
               <>
                 <div
                   className="fixed inset-0 z-[100]"
                   onClick={() => setShowMenu(false)}
                 />
-                <div className="absolute left-0 bottom-full mb-1 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-[101]">
+                <div className="absolute left-0 bottom-full mb-1 w-40 bg-cream border thin-rule rule-line shadow-lg py-1 z-[101]">
                   <button
                     onClick={() => {
                       setShowMenu(false);
                       onEdit(entry);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left text-xs font-mono text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                   >
-                    <Edit className="w-4 h-4" />
-                    <span>Edit Details</span>
+                    <Edit className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    <span>Edit</span>
                   </button>
                   {onToggleForSale && (
                     <button
@@ -258,10 +261,10 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                         setShowMenu(false);
                         onToggleForSale(entry.id, !entry.for_sale);
                       }}
-                      className="w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                      className="w-full px-3 py-2 text-left text-xs font-mono text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                     >
-                      <DollarSign className="w-4 h-4" />
-                      <span>{entry.for_sale ? 'Unmark Sale' : 'Mark for Sale'}</span>
+                      <DollarSign className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      <span>{entry.for_sale ? 'Remove Sale' : 'Mark Sale'}</span>
                     </button>
                   )}
                   <button
@@ -269,58 +272,38 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                       setShowMenu(false);
                       onDelete(entry.id);
                     }}
-                    className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left text-xs font-mono text-terracotta-700 hover:bg-terracotta-50 flex items-center gap-2"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
                     <span>Remove</span>
                   </button>
                 </div>
               </>
             )}
           </div>
-          <Tooltip content={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}>
-            <button
-              onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-              className={`flex items-center justify-center px-2 py-1.5 rounded transition ${
-                entry.is_favorite
-                  ? 'bg-yellow-400 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
-              }`}
-            >
-              <Star className="w-3.5 h-3.5" fill={entry.is_favorite ? 'currentColor' : 'none'} />
-            </button>
-          </Tooltip>
+
+          <button
+            onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
+            className="p-1.5 hover:bg-slate-100 transition-colors"
+          >
+            <Star
+              className={`w-4 h-4 ${entry.is_favorite ? 'text-gold-500' : 'text-slate-300'}`}
+              fill={entry.is_favorite ? 'currentColor' : 'none'}
+              strokeWidth={1.5}
+            />
+          </button>
+
           {onAddPlay && (
-            <Tooltip content="Log a play">
-              <button
-                onClick={() => onAddPlay(entry.id)}
-                className="flex items-center gap-1 px-2 py-1.5 bg-blue-50 text-blue-700 rounded hover:bg-blue-100 transition font-medium"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span className="text-xs font-semibold">{playCount}</span>
-              </button>
-            </Tooltip>
+            <button
+              onClick={() => onAddPlay(entry.id)}
+              className="flex items-center gap-1.5 px-2 py-1 border thin-rule rule-line hover:bg-slate-50 transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5 text-slate-600" strokeWidth={1.5} />
+              <span className="text-xs font-mono text-slate-700">{playCount}</span>
+            </button>
           )}
         </div>
       </div>
     </div>
-  );
-}
-
-function Library({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-      />
-    </svg>
   );
 }

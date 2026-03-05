@@ -10,24 +10,18 @@ interface StatCardProps {
 
 export default function StatCard({ icon, label, value, sublabel, gradient = false }: StatCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 hover:shadow-md transition">
-      <div className="flex items-center space-x-3">
-        <div
-          className={`p-3 rounded-lg ${
-            gradient
-              ? 'bg-gradient-to-br from-purple-600 to-pink-600 text-white'
-              : 'bg-slate-100 text-slate-600'
-          }`}
-        >
-          {icon}
-        </div>
-        <div className="flex-1">
-          <div className="text-sm font-medium text-slate-600">{label}</div>
-          <div className="text-2xl font-bold text-slate-900">
-            {typeof value === 'number' ? value.toLocaleString() : value}
+    <div className="bg-cream linen-texture border thin-rule rule-line p-6 hover:shadow-sm transition">
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-mono text-slate-400 uppercase tracking-widest">{label}</span>
+          <div className={gradient ? 'text-terracotta-600' : 'text-slate-400'}>
+            {icon}
           </div>
-          {sublabel && <div className="text-xs text-slate-500 mt-0.5">{sublabel}</div>}
         </div>
+        <div className="text-3xl font-display font-light text-slate-900">
+          {typeof value === 'number' ? value.toLocaleString() : value}
+        </div>
+        {sublabel && <div className="text-xs font-mono text-slate-500 mt-2">{sublabel}</div>}
       </div>
     </div>
   );

@@ -8,29 +8,29 @@ interface QuickStatsProps {
 
 export default function QuickStats({ stats }: QuickStatsProps) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0.5">
       <StatCard
-        icon={<BookOpen className="w-6 h-6" />}
-        label="Total Games"
+        icon={<BookOpen className="w-5 h-5" strokeWidth={1.5} />}
+        label="Total Entries"
         value={stats.totalGames}
         gradient={true}
       />
       <StatCard
-        icon={<TrendingUp className="w-6 h-6" />}
-        label="Total Plays"
+        icon={<TrendingUp className="w-5 h-5" strokeWidth={1.5} />}
+        label="Total Sessions"
         value={stats.totalPlays}
         gradient={true}
       />
       <StatCard
-        icon={<Star className="w-6 h-6" />}
-        label="Favorites"
+        icon={<Star className="w-5 h-5" strokeWidth={1.5} />}
+        label="Starred"
         value={stats.favoriteCount}
       />
       <StatCard
-        icon={<Clock className="w-6 h-6" />}
+        icon={<Clock className="w-5 h-5" strokeWidth={1.5} />}
         label="Unplayed"
         value={stats.unplayedCount}
-        sublabel={stats.totalGames > 0 ? `${Math.round((stats.unplayedCount / stats.totalGames) * 100)}% of library` : undefined}
+        sublabel={stats.totalGames > 0 ? `${Math.round((stats.unplayedCount / stats.totalGames) * 100)}% of collection` : undefined}
       />
     </div>
   );

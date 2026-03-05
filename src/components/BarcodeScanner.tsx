@@ -196,31 +196,31 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
-        <div className="flex items-center justify-between p-6 border-b border-slate-200">
-          <h2 className="text-2xl font-bold text-slate-900">Add Game</h2>
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+      <div className="bg-cream border thin-rule rule-line shadow-2xl max-w-md w-full">
+        <div className="flex items-center justify-between p-6 border-b thin-rule rule-line">
+          <h2 className="text-xl font-display font-light text-slate-900 tracking-wide">New Entry</h2>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition"
+            className="p-2 hover:bg-slate-100 transition"
             title="Close"
           >
-            <X className="w-5 h-5 text-slate-600" />
+            <X className="w-5 h-5 text-slate-600" strokeWidth={1.5} />
           </button>
         </div>
 
         <div className="p-6">
           {!isScanning ? (
             <div className="space-y-6">
-              <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
-                <p className="text-sm text-slate-700 leading-relaxed">
+              <div className="bg-slate-50 border thin-rule rule-line p-4">
+                <p className="text-sm font-body text-slate-700 leading-relaxed">
                   Point your camera at the barcode on the back of your board game box. The barcode is typically a 12 or 13 digit number with vertical lines.
                 </p>
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <p className="text-sm text-red-700 leading-relaxed">{error}</p>
+                <div className="bg-terracotta-50 border thin-rule border-terracotta-300 p-4">
+                  <p className="text-sm font-body text-terracotta-900 leading-relaxed">{error}</p>
                   {permissionStatus === 'denied' && (
                     <div className="mt-3 text-xs text-red-600 space-y-1">
                       <p className="font-semibold">How to enable camera access:</p>
@@ -237,40 +237,40 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
               <button
                 onClick={startScanning}
                 disabled={permissionStatus === 'unsupported'}
-                className="w-full flex items-center justify-center space-x-2 bg-slate-900 text-white py-4 rounded-lg font-semibold hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-slate-900 text-cream py-4 font-mono text-sm uppercase tracking-wider hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Camera className="w-5 h-5" />
-                <span>Start Scanning</span>
+                <Camera className="w-4 h-4" strokeWidth={1.5} />
+                <span>Begin Scan</span>
               </button>
 
               <div className="text-center">
                 <button
                   onClick={onManualEntry}
-                  className="text-sm text-slate-600 hover:text-slate-900 underline transition"
+                  className="text-xs font-mono text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
                 >
-                  Can't scan? Search by title instead
+                  Search by Title
                 </button>
               </div>
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="relative bg-black rounded-lg overflow-hidden">
+              <div className="relative bg-black border thin-rule rule-line overflow-hidden">
                 <div id={scannerIdRef.current} className="w-full" />
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <p className="text-xs text-blue-800 font-semibold mb-1">Scanning Tips:</p>
-                <ul className="text-xs text-blue-700 space-y-1">
-                  <li>• Hold the barcode 6-8 inches from the camera</li>
-                  <li>• Keep the barcode centered and horizontal</li>
-                  <li>• Ensure good lighting on the barcode</li>
-                  <li>• Hold steady for 1-2 seconds</li>
+              <div className="bg-forest-50 border thin-rule border-forest-300 p-3">
+                <p className="text-xs font-mono text-forest-900 uppercase tracking-wider mb-2">Scanning Guide:</p>
+                <ul className="text-xs font-body text-forest-800 space-y-1">
+                  <li>• Distance: 6-8 inches from camera</li>
+                  <li>• Position: Centered and horizontal</li>
+                  <li>• Lighting: Ensure adequate illumination</li>
+                  <li>• Stability: Hold steady 1-2 seconds</li>
                 </ul>
               </div>
 
-              <div className="flex items-center justify-center space-x-2 text-slate-600">
-                <Loader className="w-5 h-5 animate-spin" />
-                <span className="text-sm">Scanning for barcode...</span>
+              <div className="flex items-center justify-center gap-2 text-slate-600">
+                <Loader className="w-4 h-4 animate-spin" strokeWidth={1.5} />
+                <span className="text-xs font-mono uppercase tracking-wider">Scanning...</span>
               </div>
 
               <button
@@ -278,7 +278,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
                   await stopScanning();
                   setIsScanning(false);
                 }}
-                className="w-full py-3 border-2 border-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-50 transition"
+                className="w-full py-3 border thin-rule rule-line text-slate-700 font-mono text-sm uppercase tracking-wider hover:bg-slate-50 transition"
               >
                 Cancel
               </button>
