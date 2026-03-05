@@ -20,7 +20,7 @@ export default function Header() {
                   The Catalogue
                 </h1>
                 {profile && (
-                  <p className="text-xs font-body text-slate-500 mt-0.5 tracking-wider uppercase">
+                  <p className="text-xs font-body text-slate-500 mt-0.5 tracking-wider">
                     {profile.total_games} {profile.total_games === 1 ? 'Entry' : 'Entries'}
                   </p>
                 )}

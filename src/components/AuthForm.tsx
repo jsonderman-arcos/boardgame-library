@@ -48,7 +48,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
               The Catalogue
             </h1>
             <div className="h-px w-16 bg-slate-300 mt-4 mb-2" />
-            <p className="text-xs font-body text-slate-500 uppercase tracking-widest text-center">
+            <p className="text-xs font-body text-slate-500 tracking-widest text-center">
               {isSignUp ? 'Registration' : 'Authentication'}
             </p>
           </div>

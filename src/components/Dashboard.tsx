@@ -87,7 +87,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
         {stats.totalGames > 0 && (
           <div className="mt-8">
-            <h2 className="text-xs font-body text-slate-500 uppercase tracking-widest mb-4">Quick Actions</h2>
+            <h2 className="text-xs font-body text-slate-500 tracking-widest mb-4">Quick Actions</h2>
             <QuickActions
               onNavigateToGameNiteTools={(tool) => {
                 if (onNavigate) {
