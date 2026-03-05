@@ -31,8 +31,8 @@ export default function GameNiteTools({ initialTool = 'game-chooser' }: GameNite
         </div>
 
         {/* Subnav Tabs */}
-        <div className="mb-8 bg-white rounded-lg shadow-sm border border-slate-200 overflow-x-auto">
-          <div className="flex border-b border-slate-200 min-w-max sm:min-w-0">
+        <div className="mb-8 bg-white rounded-lg shadow-sm border border-container overflow-x-auto">
+          <div className="flex border-b border-container min-w-max sm:min-w-0">
             <button
               onClick={() => setActiveTool('game-chooser')}
               className={`flex-1 px-3 sm:px-6 py-3 sm:py-4 text-center font-medium transition-all ${

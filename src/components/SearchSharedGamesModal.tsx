@@ -62,7 +62,7 @@ export default function SearchSharedGamesModal({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-slate-200">
+        <div className="flex items-center justify-between p-6 border-b border-container">
           <h2 className="text-2xl font-bold text-slate-900">Search Game Library</h2>
           <button
             onClick={onClose}
@@ -72,7 +72,7 @@ export default function SearchSharedGamesModal({
           </button>
         </div>
 
-        <div className="p-6 border-b border-slate-200">
+        <div className="p-6 border-b border-container">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
@@ -184,7 +184,7 @@ export default function SearchSharedGamesModal({
           )}
         </div>
 
-        <div className="p-6 border-t border-slate-200 bg-slate-50">
+        <div className="p-6 border-t border-container bg-slate-50">
           <button
             onClick={onAddNew}
             className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-white border-2 border-slate-900 text-slate-900 rounded-lg hover:bg-slate-50 transition font-medium"

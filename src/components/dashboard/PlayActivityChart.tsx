@@ -23,7 +23,7 @@ export default function PlayActivityChart({ activity }: PlayActivityChartProps) 
   const totalPlays = activity.reduce((sum, a) => sum + a.playCount, 0);
 
   return (
-    <div className="bg-white container-radius shadow-sm border border-slate-200 p-6">
+    <div className="bg-white container-radius shadow-sm border border-container p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <TrendingUp className="w-5 h-5 text-purple-600" />

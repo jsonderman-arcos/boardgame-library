@@ -106,7 +106,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white container-radius shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white">
+        <div className="flex items-center justify-between p-6 border-b border-container sticky top-0 bg-white">
           <h2 className="text-2xl font-bold text-slate-900">Find Game on BoardGameGeek</h2>
           <button
             onClick={onClose}
@@ -180,7 +180,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
                     key={result.bgg_id}
                     onClick={() => handleSelectGame(result)}
                     disabled={isLoadingDetails}
-                    className="w-full text-left p-4 border-2 border-slate-200 input-radius hover:border-slate-900 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full text-left p-4 border-2 border-container input-radius hover:border-slate-900 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <div className="font-semibold text-slate-900">{result.name}</div>
                     <div className="text-sm text-slate-600">Year: {result.year} • BGG ID: {result.bgg_id}</div>
@@ -205,7 +205,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
                 <p className="text-sm text-green-800 font-semibold">Game Found!</p>
               </div>
 
-              <div className="border-2 border-slate-200 input-radius p-4 space-y-3">
+              <div className="border-2 border-container input-radius p-4 space-y-3">
                 <div className="flex gap-4">
                   {selectedGame.cover_image && (
                     <img
@@ -226,7 +226,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
                 </div>
 
                 {(selectedGame.min_players || selectedGame.max_players || selectedGame.playtime_minutes) && (
-                  <div className="flex gap-4 text-sm text-slate-700 pt-2 border-t border-slate-200">
+                  <div className="flex gap-4 text-sm text-slate-700 pt-2 border-t border-container">
                     {selectedGame.min_players && selectedGame.max_players && (
                       <span>👥 {selectedGame.min_players}-{selectedGame.max_players} players</span>
                     )}

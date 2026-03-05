@@ -140,7 +140,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
             )}
           </div>
 
-          <div className="flex space-x-3 pt-4 border-t border-slate-200">
+          <div className="flex space-x-3 pt-4 border-t border-container">
             <button
               type="button"
               onClick={() => {

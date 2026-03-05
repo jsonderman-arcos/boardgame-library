@@ -19,7 +19,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
 
   if (layout === 'list') {
     return (
-      <div className="bg-white container-radius shadow-sm border border-slate-200 hover:shadow-md transition group flex relative">
+      <div className="bg-white container-radius shadow-sm border border-container hover:shadow-md transition group flex relative">
         <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 flex-shrink-0 overflow-hidden rounded-l-[2px]">
           {game.cover_image ? (
             <img
@@ -108,7 +108,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                     className="fixed inset-0 z-[100]"
                     onClick={() => setShowMenu(false)}
                   />
-                  <div className="absolute left-0 mt-1 w-40 bg-white container-radius shadow-lg border border-slate-200 py-1 z-[101]">
+                  <div className="absolute left-0 mt-1 w-40 bg-white container-radius shadow-lg border border-container py-1 z-[101]">
                     <button
                       onClick={() => {
                         setShowMenu(false);

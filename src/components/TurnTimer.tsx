@@ -203,7 +203,7 @@ export default function TurnTimer() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-container p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
           <div>
             <p className="text-sm text-slate-600">Status</p>
@@ -226,7 +226,7 @@ export default function TurnTimer() {
             <button
               onClick={handlePause}
               disabled={!canPause}
-              className="px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="px-5 py-3 bg-white border border-container text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Pause className="w-4 h-4" />
               Pause
@@ -234,7 +234,7 @@ export default function TurnTimer() {
             <button
               onClick={handleReset}
               disabled={!canReset}
-              className="px-5 py-3 bg-white border border-slate-200 text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="px-5 py-3 bg-white border border-container text-slate-700 rounded-lg font-medium hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <RotateCcw className="w-4 h-4" />
               Reset
@@ -255,7 +255,7 @@ export default function TurnTimer() {
           </div>
         </div>
 
-        <div className="mt-6 border-t border-slate-200 pt-5">
+        <div className="mt-6 border-t border-container pt-5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <p className="text-sm text-slate-600">Turn length</p>
@@ -266,7 +266,7 @@ export default function TurnTimer() {
               <button
                 onClick={() => adjustDuration(-STEP_SECONDS)}
                 disabled={isRunning || durationSec <= MIN_SECONDS}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                className="px-3 py-2 border border-container rounded-lg text-slate-700 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
               >
                 <Minus className="w-4 h-4" />
                 10s
@@ -274,7 +274,7 @@ export default function TurnTimer() {
               <button
                 onClick={() => adjustDuration(STEP_SECONDS)}
                 disabled={isRunning || durationSec >= MAX_SECONDS}
-                className="px-3 py-2 border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
+                className="px-3 py-2 border border-container rounded-lg text-slate-700 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
               >
                 <Plus className="w-4 h-4" />
                 10s
@@ -288,7 +288,7 @@ export default function TurnTimer() {
                 key={seconds}
                 onClick={() => setPreset(seconds)}
                 disabled={isRunning}
-                className="px-3 py-2 text-xs font-medium border border-slate-200 rounded-full text-slate-600 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-3 py-2 text-xs font-medium border border-container rounded-full text-slate-600 hover:bg-slate-50 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {formatSeconds(seconds)}
               </button>

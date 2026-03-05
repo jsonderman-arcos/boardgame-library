@@ -32,7 +32,7 @@ export default function RecentlyAddedGames({ games }: RecentlyAddedGamesProps) {
   }
 
   return (
-    <div className="bg-white container-radius shadow-sm border border-slate-200 p-6">
+    <div className="bg-white container-radius shadow-sm border border-container p-6">
       <div className="flex items-center space-x-2 mb-6">
         <Clock className="w-5 h-5 text-purple-600" />
         <h2 className="text-xl font-bold text-slate-900">Recently Added</h2>

@@ -12,7 +12,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
       {/* Game Chooser Shortcut */}
       <button
         onClick={() => onNavigateToGameNiteTools('game-chooser')}
-        className="group bg-white container-radius shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-purple-300 transition text-left"
+        className="group bg-white container-radius shadow-sm border border-container p-6 hover:shadow-md hover:border-purple-300 transition text-left"
       >
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-gradient-to-br from-purple-600 to-pink-600 container-radius group-hover:scale-110 transition-transform">
@@ -32,7 +32,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
       {/* First Player Chooser Shortcut */}
       <button
         onClick={() => onNavigateToGameNiteTools('first-player')}
-        className="group bg-white container-radius shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-purple-300 transition text-left"
+        className="group bg-white container-radius shadow-sm border border-container p-6 hover:shadow-md hover:border-purple-300 transition text-left"
       >
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-gradient-to-br from-purple-600 to-pink-600 container-radius group-hover:scale-110 transition-transform">
@@ -52,7 +52,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
       {/* Turn Timer Shortcut */}
       <button
         onClick={() => onNavigateToGameNiteTools('turn-timer')}
-        className="group bg-white container-radius shadow-sm border border-slate-200 p-6 hover:shadow-md hover:border-purple-300 transition text-left"
+        className="group bg-white container-radius shadow-sm border border-container p-6 hover:shadow-md hover:border-purple-300 transition text-left"
       >
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-gradient-to-br from-purple-600 to-pink-600 container-radius group-hover:scale-110 transition-transform">

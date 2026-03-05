@@ -143,7 +143,7 @@ export default function GameChooser() {
   return (
     <div>
       {/* Filters Section */}
-      <div className="mb-8 bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+      <div className="mb-8 bg-white rounded-lg shadow-sm border border-container p-6">
         <h2 className="text-lg font-semibold text-slate-900 mb-4">Game Criteria</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
@@ -202,7 +202,7 @@ export default function GameChooser() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+        <div className="flex items-center justify-between pt-4 border-t border-container">
           <p className="text-sm text-slate-600">
             {filteredGames.length} {filteredGames.length === 1 ? 'game' : 'games'} match your criteria
           </p>
@@ -216,7 +216,7 @@ export default function GameChooser() {
       </div>
 
       {/* Wheel Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-8">
+      <div className="bg-white rounded-lg shadow-sm border border-container p-8">
         <div className="flex flex-col items-center">
           {/* Wheel or Card Container */}
           <div className="mb-8 min-h-[320px] flex items-center justify-center">

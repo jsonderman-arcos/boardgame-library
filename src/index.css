@@ -40,6 +40,10 @@
   .container-radius {
     border-radius: 2px;
   }
+
+  .border-container {
+    border-color: #a79a93;
+  }
 }
 
 @layer utilities {

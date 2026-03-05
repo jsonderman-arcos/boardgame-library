@@ -172,7 +172,7 @@ export default function FirstPlayerChooser() {
       )}
 
       {/* Player Management Section */}
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-6">
+      <div className="bg-white rounded-lg shadow-sm border border-container p-6 mb-6">
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-5 h-5 text-slate-600" />
           <h3 className="text-lg font-semibold text-slate-900">Manage Players</h3>
