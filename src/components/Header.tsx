@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { LogOut, User, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import ProfileDrawer from './ProfileDrawer';
 
 export default function Header() {
-  const { profile, signOut } = useAuth();
+  const { profile } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
@@ -27,26 +27,29 @@ export default function Header() {
               </div>
             </div>
 
-            <div className="flex items-center gap-3 flex-shrink-0">
-              {profile && (
-                <>
-                  <button
-                    onClick={() => setIsDrawerOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2 border thin-rule rule-line hover:bg-slate-50 transition-colors"
-                  >
-                    <User className="w-4 h-4 text-slate-600 flex-shrink-0" strokeWidth={1.5} />
-                    <span className="text-sm font-body text-slate-900 hidden sm:inline">{profile.username}</span>
-                  </button>
-                  <button
-                    onClick={signOut}
-                    className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-cream hover:bg-slate-800 transition-colors"
-                  >
-                    <LogOut className="w-4 h-4 flex-shrink-0" strokeWidth={1.5} />
-                    <span className="text-sm font-body hidden sm:inline">Exit</span>
-                  </button>
-                </>
-              )}
-            </div>
+            {profile && (
+              <div className="flex items-center flex-shrink-0">
+                <button
+                  onClick={() => setIsDrawerOpen(true)}
+                  className="flex items-center gap-2.5 px-4 py-2 border thin-rule rule-line hover:bg-slate-50 transition-colors group"
+                >
+                  {profile.avatar_url ? (
+                    <img
+                      src={profile.avatar_url}
+                      alt={profile.username}
+                      className="w-7 h-7 rounded-full object-cover flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-7 h-7 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0">
+                      <span className="text-xs font-body text-slate-600 font-medium">
+                        {profile.username?.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                  <span className="text-sm font-body text-slate-900 hidden sm:inline">{profile.username}</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </header>
