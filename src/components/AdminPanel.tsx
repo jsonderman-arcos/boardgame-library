@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Edit, Trash2, Plus, X, Save } from 'lucide-react';
+import { Search, CreditCard as Edit, Trash2, Plus, X, Save } from 'lucide-react';
 import { supabase, Game } from '../lib/supabase';
 
 export default function AdminPanel() {
