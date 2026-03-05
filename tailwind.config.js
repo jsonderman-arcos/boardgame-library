@@ -5,6 +5,7 @@ export default {
     extend: {
       colors: {
         cream: '#FAF7F2',
+        'warm-gray': '#6B5D56',
         terracotta: {
           50: '#FDF5F3',
           100: '#FAEBE7',
