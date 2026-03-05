@@ -82,7 +82,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   return (
     <div className="min-h-screen bg-cream">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-12">
-        <div className="flex items-center justify-between mb-8 pb-6 border-b thin-rule rule-line">
+        <div className="flex items-center justify-between mb-8 pb-6">
           <div className="flex items-center gap-4">
             <BarChart3 className="w-7 h-7 text-terracotta-600" strokeWidth={1.5} />
             <div className="border-l thin-rule rule-line h-10" />
