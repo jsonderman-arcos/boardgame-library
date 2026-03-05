@@ -32,7 +32,7 @@ export default function RecentlyAddedGames({ games }: RecentlyAddedGamesProps) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+    <div className="bg-white container-radius shadow-sm border border-slate-200 p-6">
       <div className="flex items-center space-x-2 mb-6">
         <Clock className="w-5 h-5 text-purple-600" />
         <h2 className="text-xl font-bold text-slate-900">Recently Added</h2>
@@ -45,7 +45,7 @@ export default function RecentlyAddedGames({ games }: RecentlyAddedGamesProps) {
             className="group cursor-pointer"
           >
             {/* Cover Image */}
-            <div className="aspect-square rounded-lg overflow-hidden bg-slate-100 mb-2 shadow-sm group-hover:shadow-md transition">
+            <div className="aspect-square container-radius overflow-hidden bg-slate-100 mb-2 shadow-sm group-hover:shadow-md transition">
               {entry.game.cover_image ? (
                 <img
                   src={entry.game.cover_image}

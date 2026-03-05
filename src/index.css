@@ -32,6 +32,14 @@
   .thin-rule {
     border-width: 1px;
   }
+
+  .input-radius {
+    border-radius: 4px;
+  }
+
+  .container-radius {
+    border-radius: 2px;
+  }
 }
 
 @layer utilities {

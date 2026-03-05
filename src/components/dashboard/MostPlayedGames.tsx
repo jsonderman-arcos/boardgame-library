@@ -12,7 +12,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
 
   if (playedGames.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-8 text-center">
+      <div className="bg-white container-radius shadow-sm border border-slate-200 p-8 text-center">
         <div className="max-w-md mx-auto">
           <div className="p-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <Gamepad2 className="w-8 h-8 text-purple-600" />
@@ -27,7 +27,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+    <div className="bg-white container-radius shadow-sm border border-slate-200 p-6">
       <div className="flex items-center space-x-2 mb-6">
         <Trophy className="w-5 h-5 text-purple-600" />
         <h2 className="text-xl font-bold text-slate-900">Most Played Games</h2>
@@ -40,7 +40,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
           return (
             <div
               key={entry.id}
-              className="flex items-center space-x-4 p-3 rounded-lg hover:bg-slate-50 transition"
+              className="flex items-center space-x-4 p-3 container-radius hover:bg-slate-50 transition"
             >
               {/* Rank */}
               <div className="flex-shrink-0 w-8 text-center">
@@ -55,7 +55,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
               </div>
 
               {/* Cover Image */}
-              <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-slate-100">
+              <div className="flex-shrink-0 w-16 h-16 container-radius overflow-hidden bg-slate-100">
                 {entry.game.cover_image ? (
                   <img
                     src={entry.game.cover_image}

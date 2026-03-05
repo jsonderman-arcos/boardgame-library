@@ -41,7 +41,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
   return (
     <div className="min-h-screen bg-cream flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-cream linen-texture border thin-rule rule-line p-12">
+        <div className="bg-cream linen-texture border thin-rule rule-line container-radius p-12">
           <div className="flex flex-col items-center mb-12">
             <BookOpen className="w-12 h-12 text-terracotta-600 mb-6" strokeWidth={1.5} />
             <h1 className="text-4xl font-display font-light text-slate-900 tracking-wide text-center">
@@ -64,7 +64,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
+                  className="w-full px-4 py-3 bg-cream border thin-rule rule-line input-radius focus:outline-none focus:bg-white transition font-body text-sm"
                   required={isSignUp}
                   autoComplete="username"
                 />
@@ -103,7 +103,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             </div>
 
             {error && (
-              <div className="bg-terracotta-50 border thin-rule border-terracotta-300 text-terracotta-900 px-4 py-3 text-sm font-mono">
+              <div className="bg-terracotta-50 border thin-rule border-terracotta-300 text-terracotta-900 px-4 py-3 text-sm font-mono input-radius">
                 {error}
               </div>
             )}
@@ -111,7 +111,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 text-cream py-3 font-mono text-sm uppercase tracking-widest hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-slate-900 text-cream py-3 font-mono text-sm uppercase tracking-widest hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed input-radius"
             >
               {loading ? 'Processing...' : isSignUp ? 'Register' : 'Enter'}
             </button>

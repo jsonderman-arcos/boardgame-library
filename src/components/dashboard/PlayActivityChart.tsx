@@ -23,7 +23,7 @@ export default function PlayActivityChart({ activity }: PlayActivityChartProps) 
   const totalPlays = activity.reduce((sum, a) => sum + a.playCount, 0);
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
+    <div className="bg-white container-radius shadow-sm border border-slate-200 p-6">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <TrendingUp className="w-5 h-5 text-purple-600" />
@@ -49,7 +49,7 @@ export default function PlayActivityChart({ activity }: PlayActivityChartProps) 
               >
                 {/* Tooltip */}
                 {hoveredIndex === index && item.playCount > 0 && (
-                  <div className="absolute bottom-full mb-2 px-3 py-2 bg-slate-900 text-white text-xs rounded-lg shadow-lg z-10 whitespace-nowrap">
+                  <div className="absolute bottom-full mb-2 px-3 py-2 bg-slate-900 text-white text-xs container-radius shadow-lg z-10 whitespace-nowrap">
                     <div className="font-semibold">
                       {item.playCount} {item.playCount === 1 ? 'play' : 'plays'}
                     </div>

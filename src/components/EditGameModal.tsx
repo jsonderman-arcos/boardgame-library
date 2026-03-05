@@ -38,7 +38,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-6 my-8">
+      <div className="bg-white container-radius shadow-2xl max-w-2xl w-full p-6 my-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold text-slate-900">{entry.game.name}</h2>
@@ -46,7 +46,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-100 rounded-lg transition"
+            className="p-2 hover:bg-slate-100 input-radius transition"
             title="Close"
           >
             <X className="w-5 h-5 text-slate-600" />
@@ -83,7 +83,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={4}
-              className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition resize-none"
+              className="w-full px-4 py-3 input-radius border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-transparent outline-none transition resize-none"
               placeholder="Add notes about this game..."
             />
           </div>
@@ -96,7 +96,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
               <button
                 type="button"
                 onClick={addPlayedDate}
-                className="px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition flex items-center space-x-2"
+                className="px-4 py-2 bg-slate-900 text-white input-radius hover:bg-slate-800 transition flex items-center space-x-2"
               >
                 <Calendar className="w-4 h-4" />
                 <span>Add Play</span>
@@ -111,7 +111,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
                   return (
                     <div
                       key={index}
-                      className="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg"
+                      className="flex items-center justify-between bg-slate-50 px-3 py-2 input-radius"
                     >
                       <span className="text-sm text-slate-700">
                         {new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
@@ -148,7 +148,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
                   onDelete(entry.id);
                 }
               }}
-              className="px-4 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition font-medium flex items-center space-x-2"
+              className="px-4 py-3 bg-red-100 text-red-700 input-radius hover:bg-red-200 transition font-medium flex items-center space-x-2"
               title="Remove game from library"
             >
               <Trash2 className="w-4 h-4" />
@@ -158,13 +158,13 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition font-medium"
+                className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 input-radius hover:bg-slate-200 transition font-medium"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex-1 px-4 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition font-medium"
+                className="flex-1 px-4 py-3 bg-slate-900 text-white input-radius hover:bg-slate-800 transition font-medium"
               >
                 Save Changes
               </button>

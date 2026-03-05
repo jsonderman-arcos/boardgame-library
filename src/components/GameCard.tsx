@@ -19,8 +19,8 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
 
   if (layout === 'list') {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition group flex relative">
-        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 flex-shrink-0 overflow-hidden rounded-l-lg">
+      <div className="bg-white container-radius shadow-sm border border-slate-200 hover:shadow-md transition group flex relative">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 flex-shrink-0 overflow-hidden rounded-l-[2px]">
           {game.cover_image ? (
             <img
               src={game.cover_image}
@@ -97,7 +97,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
               <Tooltip content="More options">
                 <button
                   onClick={() => setShowMenu(!showMenu)}
-                  className="p-1.5 sm:p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition"
+                  className="p-1.5 sm:p-2 bg-slate-100 text-slate-700 container-radius hover:bg-slate-200 transition"
                 >
                   <MoreVertical className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
@@ -108,7 +108,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                     className="fixed inset-0 z-[100]"
                     onClick={() => setShowMenu(false)}
                   />
-                  <div className="absolute left-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-slate-200 py-1 z-[101]">
+                  <div className="absolute left-0 mt-1 w-40 bg-white container-radius shadow-lg border border-slate-200 py-1 z-[101]">
                     <button
                       onClick={() => {
                         setShowMenu(false);
@@ -148,7 +148,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
             <Tooltip content={entry.is_favorite ? 'Remove from favorites' : 'Add to favorites'}>
               <button
                 onClick={() => onToggleFavorite(entry.id, !entry.is_favorite)}
-                className={`p-1.5 sm:p-2 rounded-lg transition ${
+                className={`p-1.5 sm:p-2 container-radius transition ${
                   entry.is_favorite
                     ? 'bg-yellow-400 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-yellow-400 hover:text-white'
@@ -161,7 +161,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
               <Tooltip content="Log a play">
                 <button
                   onClick={() => onAddPlay(entry.id)}
-                  className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition font-medium"
+                  className="flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-blue-50 text-blue-700 container-radius hover:bg-blue-100 transition font-medium"
                 >
                   <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   <span className="text-xs sm:text-sm font-semibold">{playCount}</span>
