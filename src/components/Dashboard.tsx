@@ -82,22 +82,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   return (
     <div className="min-h-screen bg-cream">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-12">
-        <div className="flex items-center justify-between mb-8 pb-6">
-          <div className="flex items-center gap-4">
-            <BarChart3 className="w-7 h-7 text-terracotta-600" strokeWidth={1.5} />
-            <div className="border-l thin-rule rule-line h-10" />
-            <h1 className="text-3xl font-display font-light text-slate-900 tracking-wide">Analytics</h1>
-          </div>
-          <button
-            onClick={handleRefresh}
-            disabled={refreshing}
-            className="flex items-center gap-2 px-4 py-2 border thin-rule rule-line hover:bg-slate-50 transition disabled:opacity-50 font-mono text-xs uppercase tracking-wider"
-          >
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} strokeWidth={1.5} />
-            <span>Refresh</span>
-          </button>
-        </div>
-
         {/* Quick Stats */}
         <QuickStats stats={stats} />
 
