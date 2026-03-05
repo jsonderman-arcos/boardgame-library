@@ -80,7 +80,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
+                className="w-full px-4 py-3 bg-cream border thin-rule rule-line input-radius focus:outline-none focus:bg-white transition font-body text-sm"
                 required
                 autoComplete="email"
               />
@@ -95,7 +95,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition font-body text-sm"
+                className="w-full px-4 py-3 bg-cream border thin-rule rule-line input-radius focus:outline-none focus:bg-white transition font-body text-sm"
                 required
                 minLength={6}
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
