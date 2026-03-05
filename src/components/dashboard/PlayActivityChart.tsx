@@ -27,7 +27,7 @@ export default function PlayActivityChart({ activity }: PlayActivityChartProps) 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center space-x-2">
           <TrendingUp className="w-5 h-5 text-purple-600" />
-          <h2 className="text-xl font-bold text-slate-900">Play Activity</h2>
+          <h2 className="text-xl font-display font-light text-slate-900">Play Activity</h2>
         </div>
         <div className="text-sm text-slate-600">
           Last 12 months • <span className="font-semibold">{totalPlays}</span> total plays

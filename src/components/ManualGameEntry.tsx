@@ -107,7 +107,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <div className="bg-white container-radius shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b border-container sticky top-0 bg-white">
-          <h2 className="text-2xl font-bold text-slate-900">Find Game on BoardGameGeek</h2>
+          <h2 className="text-2xl font-display font-light text-slate-900">Find Game on BoardGameGeek</h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-slate-100 input-radius transition"
@@ -124,7 +124,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
                 We couldn't find this barcode in our database. Please search for the game on BoardGameGeek.
               </p>
               <p className="text-xs text-yellow-700 mt-2">
-                Barcode: <span className="font-mono font-semibold">{barcode}</span>
+                Barcode: <span className="font-body font-semibold">{barcode}</span>
               </p>
             </div>
           )}
@@ -215,7 +215,7 @@ export default function ManualGameEntry({ barcode, onSave, onClose }: ManualGame
                     />
                   )}
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold text-slate-900">{selectedGame.name}</h3>
+                    <h3 className="text-xl font-display font-light text-slate-900">{selectedGame.name}</h3>
                     {selectedGame.year && (
                       <p className="text-sm text-slate-600">Published: {selectedGame.year}</p>
                     )}

@@ -67,10 +67,10 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
         <div className="text-center">
-          <p className="font-mono text-sm text-slate-600">Failed to load statistics</p>
+          <p className="font-body text-sm text-slate-600">Failed to load statistics</p>
           <button
             onClick={handleRefresh}
-            className="mt-4 px-4 py-2 bg-slate-900 text-cream font-mono text-sm hover:bg-slate-800 transition"
+            className="mt-4 px-4 py-2 bg-slate-900 text-cream font-body text-sm hover:bg-slate-800 transition"
           >
             Retry
           </button>
@@ -87,7 +87,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
 
         {stats.totalGames > 0 && (
           <div className="mt-8">
-            <h2 className="text-xs font-mono text-slate-500 uppercase tracking-widest mb-4">Quick Actions</h2>
+            <h2 className="text-xs font-body text-slate-500 uppercase tracking-widest mb-4">Quick Actions</h2>
             <QuickActions
               onNavigateToGameNiteTools={(tool) => {
                 if (onNavigate) {
@@ -137,7 +137,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
                     toast.info('Switch to the Library tab to add games');
                   }
                 }}
-                className="px-6 py-3 bg-slate-900 text-cream font-mono text-sm uppercase tracking-wider hover:bg-slate-800 transition"
+                className="px-6 py-3 bg-slate-900 text-cream font-body text-sm uppercase tracking-wider hover:bg-slate-800 transition"
               >
                 Visit Library
               </button>

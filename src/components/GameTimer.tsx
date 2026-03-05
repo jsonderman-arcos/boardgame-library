@@ -213,7 +213,7 @@ export default function GameTimer() {
       <div className="flex items-center gap-3 mb-6">
         <Clock className="w-8 h-8 text-purple-600" />
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">Game Timer</h2>
+          <h2 className="text-3xl font-display font-light text-slate-900">Game Timer</h2>
           <p className="text-slate-600 mt-1">Track the current game session in your account.</p>
         </div>
       </div>

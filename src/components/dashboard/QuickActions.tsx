@@ -19,7 +19,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
             <Sparkles className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-purple-600 transition">
+            <h3 className="font-display font-light text-slate-900 mb-1 group-hover:text-purple-600 transition">
               Choose a Game
             </h3>
             <p className="text-sm text-slate-600">
@@ -39,7 +39,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
             <Dice6 className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-purple-600 transition">
+            <h3 className="font-display font-light text-slate-900 mb-1 group-hover:text-purple-600 transition">
               Choose First Player
             </h3>
             <p className="text-sm text-slate-600">
@@ -59,7 +59,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
             <Timer className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="font-semibold text-slate-900 mb-1 group-hover:text-purple-600 transition">
+            <h3 className="font-display font-light text-slate-900 mb-1 group-hover:text-purple-600 transition">
               Turn Timer
             </h3>
             <p className="text-sm text-slate-600">

@@ -20,7 +20,7 @@ export default function Header() {
                   The Catalogue
                 </h1>
                 {profile && (
-                  <p className="text-xs font-mono text-slate-500 mt-0.5 tracking-wider uppercase">
+                  <p className="text-xs font-body text-slate-500 mt-0.5 tracking-wider uppercase">
                     {profile.total_games} {profile.total_games === 1 ? 'Entry' : 'Entries'}
                   </p>
                 )}
@@ -35,14 +35,14 @@ export default function Header() {
                     className="flex items-center gap-2 px-4 py-2 border thin-rule rule-line hover:bg-slate-50 transition-colors"
                   >
                     <User className="w-4 h-4 text-slate-600 flex-shrink-0" strokeWidth={1.5} />
-                    <span className="text-sm font-mono text-slate-900 hidden sm:inline">{profile.username}</span>
+                    <span className="text-sm font-body text-slate-900 hidden sm:inline">{profile.username}</span>
                   </button>
                   <button
                     onClick={signOut}
                     className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-cream hover:bg-slate-800 transition-colors"
                   >
                     <LogOut className="w-4 h-4 flex-shrink-0" strokeWidth={1.5} />
-                    <span className="text-sm font-mono hidden sm:inline">Exit</span>
+                    <span className="text-sm font-body hidden sm:inline">Exit</span>
                   </button>
                 </>
               )}

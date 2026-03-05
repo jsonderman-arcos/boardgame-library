@@ -490,7 +490,7 @@ export default function Library() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search catalogue..."
-                className="w-full px-4 py-3 text-sm font-mono bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition-colors"
+                className="w-full px-4 py-3 text-sm font-body bg-cream border thin-rule rule-line focus:outline-none focus:bg-white transition-colors"
               />
               {searchQuery && (
                 <button
@@ -504,7 +504,7 @@ export default function Library() {
 
             <button
               onClick={() => setShowScanner(true)}
-              className="flex items-center justify-center gap-2 bg-slate-900 text-cream px-6 py-3 hover:bg-slate-800 transition-colors font-mono text-sm"
+              className="flex items-center justify-center gap-2 bg-slate-900 text-cream px-6 py-3 hover:bg-slate-800 transition-colors font-body text-sm"
             >
               <Plus className="w-4 h-4" strokeWidth={1.5} />
               <span>New Entry</span>
@@ -515,7 +515,7 @@ export default function Library() {
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-mono uppercase tracking-wider ${
+                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-body uppercase tracking-wider ${
                   showFilters || activeFiltersCount > 0
                     ? 'bg-slate-900 text-cream'
                     : 'bg-cream text-slate-700 hover:bg-slate-50'
@@ -532,7 +532,7 @@ export default function Library() {
 
               <button
                 onClick={() => setFilterFavorites(!filterFavorites)}
-                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-mono uppercase tracking-wider ${
+                className={`flex items-center gap-2 px-4 py-2 border thin-rule rule-line transition text-xs font-body uppercase tracking-wider ${
                   filterFavorites
                     ? 'bg-gold-500 text-slate-900'
                     : 'bg-cream text-slate-700 hover:bg-slate-50'
@@ -739,7 +739,7 @@ export default function Library() {
             <div className="bg-slate-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Plus className="w-10 h-10 text-slate-400" />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">
+            <h3 className="text-xl font-display font-light text-slate-900 mb-2">
               {library.length === 0 ? 'No games yet' : 'No games match your search'}
             </h3>
             <p className="text-slate-600 mb-6">

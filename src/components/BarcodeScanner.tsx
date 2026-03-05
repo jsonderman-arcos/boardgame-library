@@ -237,7 +237,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
               <button
                 onClick={startScanning}
                 disabled={permissionStatus === 'unsupported'}
-                className="w-full flex items-center justify-center gap-2 bg-slate-900 text-cream py-4 font-mono text-sm uppercase tracking-wider hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-2 bg-slate-900 text-cream py-4 font-body text-sm uppercase tracking-wider hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Camera className="w-4 h-4" strokeWidth={1.5} />
                 <span>Begin Scan</span>
@@ -246,7 +246,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
               <div className="text-center">
                 <button
                   onClick={onManualEntry}
-                  className="text-xs font-mono text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
+                  className="text-xs font-body text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
                 >
                   Search by Title
                 </button>
@@ -259,7 +259,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
               </div>
 
               <div className="bg-forest-50 border thin-rule border-forest-300 p-3">
-                <p className="text-xs font-mono text-forest-900 uppercase tracking-wider mb-2">Scanning Guide:</p>
+                <p className="text-xs font-body text-forest-900 uppercase tracking-wider mb-2">Scanning Guide:</p>
                 <ul className="text-xs font-body text-forest-800 space-y-1">
                   <li>• Distance: 6-8 inches from camera</li>
                   <li>• Position: Centered and horizontal</li>
@@ -270,7 +270,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
 
               <div className="flex items-center justify-center gap-2 text-slate-600">
                 <Loader className="w-4 h-4 animate-spin" strokeWidth={1.5} />
-                <span className="text-xs font-mono uppercase tracking-wider">Scanning...</span>
+                <span className="text-xs font-body uppercase tracking-wider">Scanning...</span>
               </div>
 
               <button
@@ -278,7 +278,7 @@ export default function BarcodeScanner({ onScan, onClose, onManualEntry }: Barco
                   await stopScanning();
                   setIsScanning(false);
                 }}
-                className="w-full py-3 border thin-rule rule-line text-slate-700 font-mono text-sm uppercase tracking-wider hover:bg-slate-50 transition"
+                className="w-full py-3 border thin-rule rule-line text-slate-700 font-body text-sm uppercase tracking-wider hover:bg-slate-50 transition"
               >
                 Cancel
               </button>

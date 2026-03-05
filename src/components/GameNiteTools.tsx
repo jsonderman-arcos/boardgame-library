@@ -21,7 +21,7 @@ export default function GameNiteTools({ initialTool = 'game-chooser' }: GameNite
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
+          <h1 className="text-3xl font-display font-light text-slate-900 flex items-center gap-3">
             <Sparkles className="w-8 h-8 text-purple-600" />
             Game Nite Tools
           </h1>

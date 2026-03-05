@@ -198,7 +198,7 @@ export default function TurnTimer() {
       <div className="flex items-center gap-3 mb-6">
         <Timer className="w-8 h-8 text-purple-600" />
         <div>
-          <h2 className="text-3xl font-bold text-slate-900">Turn Timer</h2>
+          <h2 className="text-3xl font-display font-light text-slate-900">Turn Timer</h2>
           <p className="text-slate-600 mt-1">Countdown each player turn in 10-second steps.</p>
         </div>
       </div>

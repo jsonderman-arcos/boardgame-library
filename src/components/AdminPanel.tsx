@@ -69,7 +69,7 @@ export default function AdminPanel() {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Admin Panel</h1>
+            <h1 className="text-3xl font-display font-light text-slate-900">Admin Panel</h1>
             <p className="text-slate-600 mt-1">Manage shared games database</p>
           </div>
           <button
@@ -154,7 +154,7 @@ export default function AdminPanel() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-600 font-mono">{game.barcode}</td>
+                    <td className="px-6 py-4 text-sm text-slate-600 font-body">{game.barcode}</td>
                     <td className="px-6 py-4 text-sm text-slate-600">
                       {game.publisher || '-'}
                     </td>

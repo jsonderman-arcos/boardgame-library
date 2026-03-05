@@ -48,7 +48,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
               The Catalogue
             </h1>
             <div className="h-px w-16 bg-slate-300 mt-4 mb-2" />
-            <p className="text-xs font-mono text-slate-500 uppercase tracking-widest text-center">
+            <p className="text-xs font-body text-slate-500 uppercase tracking-widest text-center">
               {isSignUp ? 'Registration' : 'Authentication'}
             </p>
           </div>
@@ -56,7 +56,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
           <form onSubmit={handleSubmit} className="space-y-6">
             {isSignUp && (
               <div>
-                <label htmlFor="username" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
+                <label htmlFor="username" className="block text-xs font-body text-slate-500 uppercase tracking-wider mb-2">
                   Username
                 </label>
                 <input
@@ -72,7 +72,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
+              <label htmlFor="email" className="block text-xs font-body text-slate-500 uppercase tracking-wider mb-2">
                 Email
               </label>
               <input
@@ -87,7 +87,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
+              <label htmlFor="password" className="block text-xs font-body text-slate-500 uppercase tracking-wider mb-2">
                 Password
               </label>
               <input
@@ -103,7 +103,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             </div>
 
             {error && (
-              <div className="bg-terracotta-50 border thin-rule border-terracotta-300 text-terracotta-900 px-4 py-3 text-sm font-mono input-radius">
+              <div className="bg-terracotta-50 border thin-rule border-terracotta-300 text-terracotta-900 px-4 py-3 text-sm font-body input-radius">
                 {error}
               </div>
             )}
@@ -111,7 +111,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 text-cream py-3 font-mono text-sm uppercase tracking-widest hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed input-radius"
+              className="w-full bg-slate-900 text-cream py-3 font-body text-sm uppercase tracking-widest hover:bg-slate-800 transition disabled:opacity-50 disabled:cursor-not-allowed input-radius"
             >
               {loading ? 'Processing...' : isSignUp ? 'Register' : 'Enter'}
             </button>
@@ -123,7 +123,7 @@ export default function AuthForm({ onSuccess }: AuthFormProps) {
                 setIsSignUp(!isSignUp);
                 setError('');
               }}
-              className="text-xs font-mono text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
+              className="text-xs font-body text-slate-600 hover:text-slate-900 uppercase tracking-wider transition"
             >
               {isSignUp ? 'Return to Sign In' : 'Create New Account'}
             </button>

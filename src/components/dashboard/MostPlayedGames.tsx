@@ -17,7 +17,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
           <div className="p-4 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
             <Gamepad2 className="w-8 h-8 text-purple-600" />
           </div>
-          <h3 className="text-xl font-bold text-slate-900 mb-2">No Plays Yet</h3>
+          <h3 className="text-xl font-display font-light text-slate-900 mb-2">No Plays Yet</h3>
           <p className="text-slate-600">
             Start logging plays to see your most played games here!
           </p>
@@ -30,7 +30,7 @@ export default function MostPlayedGames({ games, maxPlayCount }: MostPlayedGames
     <div className="bg-white container-radius shadow-sm border border-container p-6">
       <div className="flex items-center space-x-2 mb-6">
         <Trophy className="w-5 h-5 text-purple-600" />
-        <h2 className="text-xl font-bold text-slate-900">Most Played Games</h2>
+        <h2 className="text-xl font-display font-light text-slate-900">Most Played Games</h2>
       </div>
 
       <div className="space-y-4">

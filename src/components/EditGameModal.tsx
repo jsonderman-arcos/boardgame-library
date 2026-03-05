@@ -41,7 +41,7 @@ export default function EditGameModal({ entry, onSave, onClose, onDelete }: Edit
       <div className="bg-white container-radius shadow-2xl max-w-2xl w-full p-6 my-8">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">{entry.game.name}</h2>
+            <h2 className="text-2xl font-display font-light text-slate-900">{entry.game.name}</h2>
             <p className="text-slate-600">{entry.game.publisher}</p>
           </div>
           <button

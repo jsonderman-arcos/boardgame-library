@@ -160,7 +160,7 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
       <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-xl z-50 transform transition-transform">
         <div className="flex flex-col h-full">
           <div className="flex items-center justify-between p-6 border-b border-container">
-            <h2 className="text-2xl font-bold text-slate-900">Profile Settings</h2>
+            <h2 className="text-2xl font-display font-light text-slate-900">Profile Settings</h2>
             <button
               onClick={onClose}
               className="p-2 hover:bg-slate-100 rounded-lg transition"
@@ -319,7 +319,7 @@ export default function ProfileDrawer({ isOpen, onClose }: ProfileDrawerProps) {
             </form>
 
             <div className="mt-8 pt-6 border-t border-container">
-              <h3 className="text-lg font-semibold text-slate-900 mb-4">Change Password</h3>
+              <h3 className="text-lg font-display font-light text-slate-900 mb-4">Change Password</h3>
               <form onSubmit={handlePasswordChange} className="space-y-4">
                 <div>
                   <label className="flex items-center space-x-2 text-sm font-medium text-slate-700 mb-2">

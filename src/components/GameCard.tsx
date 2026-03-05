@@ -191,7 +191,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
 
         {entry.for_sale && (
           <div className="absolute top-2 right-2 bg-forest-700 text-cream px-2 py-1">
-            <span className="text-xs font-mono uppercase tracking-wider">Sale</span>
+            <span className="text-xs font-body uppercase tracking-wider">Sale</span>
           </div>
         )}
 
@@ -208,14 +208,14 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
         <div className="space-y-1 mb-3">
           {game.year && (
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Year</span>
-              <span className="text-xs font-mono text-slate-700">{game.year}</span>
+              <span className="text-[10px] font-body text-slate-400 uppercase tracking-wider">Year</span>
+              <span className="text-xs font-body text-slate-700">{game.year}</span>
             </div>
           )}
           {(game.min_players || game.max_players) && (
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Players</span>
-              <span className="text-xs font-mono text-slate-700">
+              <span className="text-[10px] font-body text-slate-400 uppercase tracking-wider">Players</span>
+              <span className="text-xs font-body text-slate-700">
                 {game.min_players === game.max_players
                   ? game.min_players
                   : `${game.min_players || '?'}–${game.max_players || '?'}`}
@@ -224,8 +224,8 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
           )}
           {game.playtime_minutes && (
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Time</span>
-              <span className="text-xs font-mono text-slate-700">{game.playtime_minutes} min</span>
+              <span className="text-[10px] font-body text-slate-400 uppercase tracking-wider">Time</span>
+              <span className="text-xs font-body text-slate-700">{game.playtime_minutes} min</span>
             </div>
           )}
         </div>
@@ -250,7 +250,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                       setShowMenu(false);
                       onEdit(entry);
                     }}
-                    className="w-full px-3 py-2 text-left text-xs font-mono text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left text-xs font-body text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                   >
                     <Edit className="w-3.5 h-3.5" strokeWidth={1.5} />
                     <span>Edit</span>
@@ -261,7 +261,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                         setShowMenu(false);
                         onToggleForSale(entry.id, !entry.for_sale);
                       }}
-                      className="w-full px-3 py-2 text-left text-xs font-mono text-slate-700 hover:bg-slate-50 flex items-center gap-2"
+                      className="w-full px-3 py-2 text-left text-xs font-body text-slate-700 hover:bg-slate-50 flex items-center gap-2"
                     >
                       <DollarSign className="w-3.5 h-3.5" strokeWidth={1.5} />
                       <span>{entry.for_sale ? 'Remove Sale' : 'Mark Sale'}</span>
@@ -272,7 +272,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                       setShowMenu(false);
                       onDelete(entry.id);
                     }}
-                    className="w-full px-3 py-2 text-left text-xs font-mono text-terracotta-700 hover:bg-terracotta-50 flex items-center gap-2"
+                    className="w-full px-3 py-2 text-left text-xs font-body text-terracotta-700 hover:bg-terracotta-50 flex items-center gap-2"
                   >
                     <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
                     <span>Remove</span>
@@ -299,7 +299,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
               className="flex items-center gap-1.5 px-2 py-1 border thin-rule rule-line hover:bg-slate-50 transition-colors"
             >
               <Plus className="w-3.5 h-3.5 text-slate-600" strokeWidth={1.5} />
-              <span className="text-xs font-mono text-slate-700">{playCount}</span>
+              <span className="text-xs font-body text-slate-700">{playCount}</span>
             </button>
           )}
         </div>

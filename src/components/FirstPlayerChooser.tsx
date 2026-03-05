@@ -161,7 +161,7 @@ export default function FirstPlayerChooser() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Dice6 className="w-8 h-8 text-purple-600" />
-        <h2 className="text-3xl font-bold text-slate-900">First Player Chooser</h2>
+        <h2 className="text-3xl font-display font-light text-slate-900">First Player Chooser</h2>
       </div>
 
       {/* Error Message */}
@@ -175,7 +175,7 @@ export default function FirstPlayerChooser() {
       <div className="bg-white rounded-lg shadow-sm border border-container p-6 mb-6">
         <div className="flex items-center gap-2 mb-4">
           <Users className="w-5 h-5 text-slate-600" />
-          <h3 className="text-lg font-semibold text-slate-900">Manage Players</h3>
+          <h3 className="text-lg font-display font-light text-slate-900">Manage Players</h3>
         </div>
 
         {/* Add Player Input */}
@@ -321,7 +321,7 @@ export default function FirstPlayerChooser() {
       {showWinner && winner && (
         <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg shadow-lg border-2 border-purple-300 p-8 mb-6 animate-[fadeIn_0.5s_ease-in]">
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-slate-900 mb-2">🎉 First Player Chosen! 🎉</h3>
+            <h3 className="text-2xl font-display font-light text-slate-900 mb-2">First Player Chosen!</h3>
           </div>
 
           <div className="winner-card bg-white rounded-xl shadow-2xl p-12 text-center border-4 border-purple-400 mb-6">
