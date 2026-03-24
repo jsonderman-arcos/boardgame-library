@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BarChart3, RefreshCw, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { getDashboardStats, getMostPlayedGames, getRecentlyAddedGames, getPlayActivityByMonth, DashboardStats, PlayedGameStat, PlayActivity } from '../lib/dashboard';
 import QuickStats from './dashboard/QuickStats';
@@ -10,7 +10,7 @@ import PlayActivityChart from './dashboard/PlayActivityChart';
 import { toast } from 'sonner';
 
 interface DashboardProps {
-  onNavigate?: (tab: 'library' | 'gameNiteTools', params?: { tool?: 'game-chooser' | 'first-player' }) => void;
+  onNavigate?: (tab: 'library' | 'gameNiteTools', params?: { tool?: 'game-chooser' | 'first-player' | 'turn-timer' | 'game-timer' }) => void;
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
@@ -20,7 +20,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const [recentlyAdded, setRecentlyAdded] = useState<PlayedGameStat[]>([]);
   const [playActivity, setPlayActivity] = useState<PlayActivity[]>([]);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
 
   const loadDashboard = async () => {
     if (!user) return;
@@ -41,7 +40,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
       toast.error('Failed to load dashboard statistics');
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
 
@@ -50,7 +48,6 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   }, [user]);
 
   const handleRefresh = async () => {
-    setRefreshing(true);
     await loadDashboard();
     toast.success('Dashboard refreshed');
   };

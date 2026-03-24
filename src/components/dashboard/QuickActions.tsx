@@ -1,4 +1,4 @@
-import { Dice6, Users, Timer, Clock, Sparkles } from 'lucide-react';
+import { Dice6, Timer, Loader } from 'lucide-react';
 
 type Tool = 'game-chooser' | 'first-player' | 'turn-timer' | 'game-timer';
 
@@ -16,7 +16,7 @@ export default function QuickActions({ onNavigateToGameNiteTools }: QuickActions
       >
         <div className="flex items-start space-x-4">
           <div className="p-3 bg-gradient-to-br from-purple-600 to-pink-600 container-radius group-hover:scale-110 transition-transform">
-            <Sparkles className="w-6 h-6 text-white" />
+            <Loader className="w-6 h-6 text-white" />
           </div>
           <div className="flex-1">
             <h3 className="font-display font-light text-slate-900 mb-1 group-hover:text-purple-600 transition">

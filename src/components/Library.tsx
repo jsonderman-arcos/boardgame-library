@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Plus, Search, Star, Filter, Grid3x3, List, ChevronDown, X, ArrowUpDown, DollarSign } from 'lucide-react';
+import { Plus, Star, Filter, Grid3x3, List, ChevronDown, X, ArrowUpDown, DollarSign } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import {
   getUserLibrary,
@@ -13,7 +13,6 @@ import {
 } from '../lib/games';
 import { lookupBarcodeWithBgg, submitBarcodeToGameUpc } from '../lib/bgg';
 import { UserLibraryEntry, Game } from '../lib/supabase';
-import Header from './Header';
 import GameCard from './GameCard';
 import BarcodeScanner from './BarcodeScanner';
 import EditGameModal from './EditGameModal';
@@ -164,12 +163,12 @@ export default function Library() {
           if (count === 6) {
             if (!minPlayers && maxPlayers) return maxPlayers >= 6;
             if (minPlayers && !maxPlayers) return true;
-            return maxPlayers >= 6 || minPlayers >= 6;
+            return (maxPlayers && maxPlayers >= 6) || (minPlayers && minPlayers >= 6);
           }
 
           if (!minPlayers && maxPlayers) return count <= maxPlayers;
           if (minPlayers && !maxPlayers) return count >= minPlayers;
-          return count >= minPlayers && count <= maxPlayers;
+          return minPlayers && maxPlayers && count >= minPlayers && count <= maxPlayers;
         });
       });
     }
@@ -479,7 +478,6 @@ export default function Library() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12">
         <div className="mb-8 sm:mb-12 space-y-4 sm:space-y-6">

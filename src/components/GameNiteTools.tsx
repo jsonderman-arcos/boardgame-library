@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Header from './Header';
 import GameChooser from './GameChooser';
 import FirstPlayerChooser from './FirstPlayerChooser';
 import TurnTimer from './TurnTimer';
@@ -16,9 +15,7 @@ export default function GameNiteTools({ initialTool = 'game-chooser' }: GameNite
   const [activeTool, setActiveTool] = useState<Tool>(initialTool);
 
   return (
-    <>
-      <Header />
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-display font-light text-slate-900 flex items-center gap-3">
@@ -110,7 +107,6 @@ export default function GameNiteTools({ initialTool = 'game-chooser' }: GameNite
           {activeTool === 'turn-timer' && <TurnTimer />}
           {activeTool === 'game-timer' && <GameTimer />}
         </div>
-      </div>
-    </>
+    </div>
   );
 }

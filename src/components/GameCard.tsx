@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Star, Trash2, CreditCard as Edit, DollarSign, Users, Clock, Plus, MoreVertical, BookOpen } from 'lucide-react';
 import { UserLibraryEntry, Game } from '../lib/supabase';
+import Tooltip from './Tooltip';
 
 interface GameCardProps {
   entry: UserLibraryEntry & { game: Game };
@@ -29,7 +30,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-slate-400">
-              <Library className="w-6 h-6 sm:w-8 sm:h-8" />
+              <BookOpen className="w-6 h-6 sm:w-8 sm:h-8" />
             </div>
           )}
         </div>
@@ -56,7 +57,7 @@ export default function GameCard({ entry, onToggleFavorite, onToggleForSale, onD
                   <Users className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span>
                     {game.min_players === game.max_players
-                      ? `${game.min_players} player${game.min_players > 1 ? 's' : ''}`
+                      ? `${game.min_players} player${game.min_players && game.min_players > 1 ? 's' : ''}`
                       : `${game.min_players || '?'}-${game.max_players || '?'} players`}
                   </span>
                 </div>

@@ -12,7 +12,7 @@ interface EditGameModalProps {
 export default function EditGameModal({ entry, onSave, onClose, onDelete }: EditGameModalProps) {
   const [forSale, setForSale] = useState(entry.for_sale);
   const [isFavorite, setIsFavorite] = useState(entry.is_favorite);
-  const [ranking, setRanking] = useState(entry.personal_ranking || '');
+  const [ranking] = useState(entry.personal_ranking || '');
   const [notes, setNotes] = useState(entry.notes || '');
   const [playedDates, setPlayedDates] = useState<string[]>(entry.played_dates || []);
 
